@@ -331,14 +331,14 @@
   </div> 
   <!-- Boxed container for terms and condition -->
   <!-- Boxed container for terms and condition -->
-<div v-if="showTermsPopup" class="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-gray-900 bg-opacity-50 z-[2000]">
-  <div class="bg-white p-4 rounded-md max-w-md relative overflow-y-auto md:max-w-lg shadow-lg">
+  <div v-if="showTermsPopup" class="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-gray-900 bg-opacity-50 z-[2000]">
+  <div class="bg-white p-4 rounded-md w-11/12 h-4/5 md:max-w-lg relative overflow-y-auto shadow-lg">
     <!-- Close button positioned at the top of the content -->
     <button @click="showTermsPopup = false" class="absolute top-4 right-4 px-2 py-1 bg-blue-500 text-white rounded-md">Close</button>
     <div class="content relative mt-8">
-      <h2 class="text-2xl font-bold mb-4 text-center text-blue-500">Terms & Conditions</h2>
+      <h2 class="text-lg md:text-xl font-bold mb-4 text-center text-blue-500">Terms & Conditions</h2>
       <!-- Add content here -->
-      <ul class="list-disc pl-6">
+      <ul class="list-disc pl-4 md:pl-6 text-xs md:text-sm text-left">
         <li>Special K Card Membership is non-transferable.</li>
         <li>Membership is free of cost for our patrons. However, Khulshi Mart reserves the right to accept/decline/defer any membership application.</li>
         <li>Special K Card can not be used for credit purchases. This is only a membership card.</li>
@@ -354,6 +354,10 @@
     </div>
   </div>
 </div>
+
+
+
+
 
 
 
@@ -692,7 +696,7 @@ onMounted(() => {
 @media screen and (max-width: 768px) {
   .block {
     /* display: block;  */
-    font-size: 15px;
+    font-size: 13px;
   }
 }
 
