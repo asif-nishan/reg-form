@@ -696,7 +696,7 @@ onMounted(() => {
 @media screen and (max-width: 768px) {
   .block {
     /* display: block;  */
-    font-size: 13px;
+    font-size: 11px;
   }
 }
 
