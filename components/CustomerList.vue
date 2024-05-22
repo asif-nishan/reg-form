@@ -99,6 +99,12 @@
                 >
                   Complimentary Card
                 </th>
+                <th
+                  scope="col"
+                  class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
+                  Anniversary
+                </th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
@@ -144,6 +150,9 @@
                 </td>
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                   {{ person.hasComplimentaryCard ? "Yes" : "No" }}
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  {{ person.hasanniversary  }}
                 </td>
               </tr>
             </tbody>
@@ -332,6 +341,7 @@ const downloadCsv = () => {
       "Family Member": newObj.familyMembers,
       "Complimentary Card": newObj.hasComplimentaryCard,
       Gender: newObj.familyMembers,
+      Anniversary:newObj.anniversary,
     };
   });
   const csv = generateCsv(csvConfig)(newArray);
