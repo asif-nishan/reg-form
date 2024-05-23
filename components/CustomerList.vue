@@ -173,32 +173,29 @@ const onPageChanged = (p) => {
 };
 
 const downloadCsv = () => {
-  const csvData = userList.value.map((person, index) => ({
-    "SL No": (2000000 + index + 1).toString().padStart(8, '0'), // Custom serial number
-    "First Name": person.name,
-    "Last Name": person.lastName,
-    "Phone": person.phone,
-    "Email": person.email,
-    "Address": person.address,
-    "Date of Birth": person.birthDate,
-    "Blood Group": person.bloodGroup,
-    "Occupation": person.occupation,
-    "Family Members": person.familyMembers,
-    "Gender": person.gender,
-    "Complimentary Card": person.hasComplimentaryCard ? "Yes" : "No",
-    "Anniversary": person.anniversary,
-  }));
-
-  const csvContent = generateCsv(csvData);
-
-  // Create a blob with the CSV data
-  const blob = new Blob([csvContent], { type: 'text/csv' });
-
-  // Create a temporary anchor element to trigger the download
-  const link = document.createElement('a');
-  link.href = window.URL.createObjectURL(blob);
-  link.download = 'customer-list.csv';
-  link.click();
+  const newArray = userList.value.map((obj, index) => {
+    const newObj = {};
+    for (const key in obj) {
+      newObj[key] = obj[key] ?? "";
+    }
+    return {
+      "SL No": (20000000 + index + 1).toString().padStart(8, '0'), // Custom serial number
+      "First Name": newObj.name,
+      "Last Name": newObj.lastName,
+      Phone: newObj.phone,
+      Email: newObj.email,
+      Address: newObj.address,
+      "Date of Birth": newObj.birthDate,
+      "Blood Group": newObj.bloodGroup,
+      Occupation: newObj.occupation,
+      "Family Members": `"${newObj.familyMembers}"`, // Ensure Family Members is formatted as text
+      "Complimentary Card": newObj.hasComplimentaryCard ? "Yes" : "No",
+      Gender: newObj.gender,
+      Anniversary: newObj.anniversary,
+    };
+  });
+  const csv = generateCsv(mkConfig({ useKeysAsHeaders: true, filename: "customer-list" }))(newArray);
+  download(mkConfig({ useKeysAsHeaders: true, filename: "customer-list" }))(csv);
 };
 
 onMounted(() => {
@@ -209,6 +206,7 @@ onMounted(() => {
   }
 });
 </script>
+
 
 <style scoped>
 .container {
