@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto shadow-2xl">
+  <div class="container mx-auto shadow-2xl p-4">
     <section class="grid grid-cols-3 p-4 sm:p-6 lg:p-8">
       <div class="flex gap-2">
         <input
@@ -21,50 +21,55 @@
         </button>
       </div>
     </section>
-    <div class="mt-8 flow-root" v-if="!loading && userList?.length">
+    <div class="mt-8" v-if="!loading && userList?.length">
       <div class="overflow-x-auto">
-        <div class="inline-block min-w-full align-middle">
-          <table class="min-w-full divide-y divide-gray-300">
-            <thead class="bg-gray-50">
-              <tr>
-                <th class="table-header">SL No.</th>
-                <th class="table-header">First Name</th>
-                <th class="table-header">Last Name</th>
-                <th class="table-header">Phone</th>
-                <th class="table-header">Address</th>
-                <th class="table-header">Dob</th>
-                <th class="table-header">Email</th>
-                <th class="table-header">Blood Group</th>
-                <th class="table-header">Occupation</th>
-                <th class="table-header">Family Members</th>
-                <th class="table-header">Gender</th>
-                <th class="table-header">Complimentary Card</th>
-                <th class="table-header">Anniversary</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200 bg-white">
-              <tr v-for="(person, index) in userList" :key="person.id" :class="index % 2 === 0 ? 'bg-gray-50' : 'bg-white'">
-                <td class="table-data">{{ index + 1 }}</td>
-                <td class="table-data">{{ person.name }}</td>
-                <td class="table-data">{{ person.lastName }}</td>
-                <td class="table-data">{{ person.phone }}</td>
-                <td class="table-data">{{ person.address }}</td>
-                <td class="table-data">{{ person.birthDate }}</td>
-                <td class="table-data">{{ person.email }}</td>
-                <td class="table-data">{{ person.bloodGroup }}</td>
-                <td class="table-data">{{ person.occupation }}</td>
-                <td class="table-data">{{ person.familyMembers }}</td>
-                <td class="table-data">{{ person.gender }}</td>
-                <td class="table-data">{{ person.hasComplimentaryCard ? "Yes" : "No" }}</td>
-                <td class="table-data">{{ person.anniversary }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <table class="min-w-full divide-y divide-gray-300">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="table-header">SL No.</th>
+              <th class="table-header">First Name</th>
+              <th class="table-header">Last Name</th>
+              <th class="table-header">Phone</th>
+              <th class="table-header">Address</th>
+              <th class="table-header">Dob</th>
+              <th class="table-header">Email</th>
+              <th class="table-header">Blood Group</th>
+              <th class="table-header">Occupation</th>
+              <th class="table-header">Family Members</th>
+              <th class="table-header">Gender</th>
+              <th class="table-header">Complimentary Card</th>
+              <th class="table-header">Anniversary</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 bg-white">
+            <tr
+              v-for="(person, index) in userList"
+              :key="person.id"
+              :class="index % 2 === 0 ? 'bg-gray-50' : 'bg-white'"
+            >
+              <td class="table-data">{{ index + 1 }}</td>
+              <td class="table-data">{{ person.name }}</td>
+              <td class="table-data">{{ person.lastName }}</td>
+              <td class="table-data">{{ person.phone }}</td>
+              <td class="table-data">{{ person.address }}</td>
+              <td class="table-data">{{ person.birthDate }}</td>
+              <td class="table-data">{{ person.email }}</td>
+              <td class="table-data">{{ person.bloodGroup }}</td>
+              <td class="table-data">{{ person.occupation }}</td>
+              <td class="table-data">{{ person.familyMembers }}</td>
+              <td class="table-data">{{ person.gender }}</td>
+              <td class="table-data">{{ person.hasComplimentaryCard ? "Yes" : "No" }}</td>
+              <td class="table-data">{{ person.anniversary }}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
-    <div class="text-center flex items-center justify-center" v-else-if="loading || userList.length == 0">
-      {{ loading ? 'Loading' : 'No data' }}
+    <div
+      class="text-center flex items-center justify-center mt-8"
+      v-else-if="loading || userList.length == 0"
+    >
+      {{ loading ? "Loading" : "No data" }}
     </div>
     <Pagination
       class="mt-6"
@@ -74,7 +79,11 @@
       :totalPerPage="totalPerPage"
       @onChange="onPageChanged"
     >
-      <select class="focus:outline-none bg-none" v-model="perPage" @change="loadData">
+      <select
+        class="focus:outline-none bg-none"
+        v-model="perPage"
+        @change="loadData"
+      >
         <option>10</option>
         <option>25</option>
         <option>50</option>
@@ -193,6 +202,7 @@ onMounted(() => {
 <style scoped>
 .container {
   max-width: 90rem;
+  padding: 1rem;
 }
 .input-class {
   @apply relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:outline-none focus:ring-blue-500 sm:text-sm focus:border-blue-500;
