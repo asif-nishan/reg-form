@@ -24,8 +24,8 @@
     <div class="mt-8 flow-root" v-if="!loading && userList?.length">
       <div class="overflow-x-auto">
         <div class="inline-block min-w-full align-middle">
-          <table class="min-w-full divide-y divide-gray-300 border">
-            <thead class="bg-gray-100">
+          <table class="min-w-full divide-y divide-gray-300">
+            <thead>
               <tr>
                 <th class="table-header">SL No.</th>
                 <th class="table-header">First Name</th>
@@ -42,7 +42,7 @@
                 <th class="table-header">Anniversary</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-gray-200 bg-white">
+            <tbody class="divide-y divide-gray-200">
               <tr v-for="(person, index) in userList" :key="person.id">
                 <td class="table-data">{{ index + 1 }}</td>
                 <td class="table-data">{{ person.name }}</td>
@@ -171,7 +171,7 @@ const downloadCsv = () => {
       "Date of Birth": newObj.birthDate,
       "Blood Group": newObj.bloodGroup,
       Occupation: newObj.occupation,
-      "Family Members": newObj.familyMembers,
+      "Family Members": `"${newObj.familyMembers}"`, // Ensure Family Members is formatted as text
       "Complimentary Card": newObj.hasComplimentaryCard ? "Yes" : "No",
       Gender: newObj.gender,
       Anniversary: newObj.anniversary,
@@ -198,9 +198,9 @@ onMounted(() => {
   @apply relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:outline-none focus:ring-blue-500 sm:text-sm focus:border-blue-500;
 }
 .table-header {
-  @apply py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0 border-b;
+  @apply py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0;
 }
 .table-data {
-  @apply whitespace-nowrap px-3 py-4 text-sm text-gray-500 border-b;
+  @apply whitespace-nowrap px-3 py-4 text-sm text-gray-500;
 }
 </style>
