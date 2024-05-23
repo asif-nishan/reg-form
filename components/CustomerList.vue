@@ -10,14 +10,7 @@
           placeholder="Search by phone number"
           class="input-class"
         />
-        <input
-          type="text"
-          id="searchName"
-          v-model="searchNameQuery"
-          @input="debouncedSearch"
-          placeholder="Search by first name"
-          class="input-class"
-        />
+        
       </div>
       <div></div>
       <div class="text-right">
