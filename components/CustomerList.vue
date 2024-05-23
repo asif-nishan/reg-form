@@ -139,6 +139,10 @@ const loadData = () => {
   if (searchNameQuery.value) {
     finalUrl += `&name=${searchNameQuery.value}`;
   }
+
+  // Logging the final URL to check the parameters
+  console.log("Final URL:", finalUrl);
+
   fetch(finalUrl, {
     headers: { Authorization: `Bearer ${token}` },
   })
