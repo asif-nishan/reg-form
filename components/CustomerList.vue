@@ -47,7 +47,7 @@
               :key="person.id"
               :class="index % 2 === 0 ? 'bg-gray-50' : 'bg-white'"
             >
-              <td class="table-data">{{ (20000000 + index + 1).toString().padStart(8, '0') }}</td> <!-- Custom serial number -->
+              <td class="table-data">{{ (2000000 + index + 1).toString().padStart(8, '0') }}</td> <!-- Custom serial number -->
               <td class="table-data">{{ person.name }}</td>
               <td class="table-data">{{ person.lastName }}</td>
               <td class="table-data">{{ person.phone }}</td>
