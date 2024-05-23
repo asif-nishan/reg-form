@@ -1,100 +1,5 @@
 <template>
-  <div class="container mx-auto shadow-2xl p-4">
-    <section class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 sm:p-6 lg:p-8">
-      <div class="flex flex-col gap-2">
-        <input
-          type="text"
-          id="searchPhone"
-          v-model="searchPhoneQuery"
-          @input="debouncedSearch"
-          placeholder="Search by phone number"
-          class="input-class"
-        />
-        
-      </div>
-      <div></div>
-      <div class="text-right">
-        <button
-          class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
-          @click="downloadCsv"
-        >
-          Export CSV
-        </button>
-      </div>
-    </section>
-    <div class="mt-8" v-if="!loading && userList?.length">
-      <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-300">
-          <thead class="bg-gray-50">
-            <tr>
-              <th class="table-header">SL No.</th>
-              <th class="table-header">First Name</th>
-              <th class="table-header">Last Name</th>
-              <th class="table-header">Phone</th>
-              <th class="table-header">Address</th>
-              <th class="table-header">Dob</th>
-              <th class="table-header">Email</th>
-              <th class="table-header">Blood Group</th>
-              <th class="table-header">Occupation</th>
-              <th class="table-header">Family Members</th>
-              <th class="table-header">Gender</th>
-              <th class="table-header">Complimentary Card</th>
-              <th class="table-header">Anniversary</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-200 bg-white">
-            <tr
-              v-for="(person, index) in userList"
-              :key="person.id"
-              :class="index % 2 === 0 ? 'bg-gray-50' : 'bg-white'"
-            >
-              <td class="table-data">{{ index + 1 }}</td>
-              <td class="table-data">{{ person.name }}</td>
-              <td class="table-data">{{ person.lastName }}</td>
-              <td class="table-data">{{ person.phone }}</td>
-              <td class="table-data">{{ person.address }}</td>
-              <td class="table-data">{{ person.birthDate }}</td>
-              <td class="table-data">{{ person.email }}</td>
-              <td class="table-data">{{ person.bloodGroup }}</td>
-              <td class="table-data">{{ person.occupation }}</td>
-              <td class="table-data">{{ person.familyMembers }}</td>
-              <td class="table-data">{{ person.gender }}</td>
-              <td class="table-data">{{ person.hasComplimentaryCard ? "Yes" : "No" }}</td>
-              <td class="table-data">{{ person.anniversary }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div
-      class="text-center flex items-center justify-center mt-8"
-      v-else-if="loading || userList.length == 0"
-    >
-      {{ loading ? "Loading" : "No data" }}
-    </div>
-    <Pagination
-      class="mt-6"
-      :perPage="perPage"
-      :lastPage="lastPage"
-      :total="total"
-      :totalPerPage="totalPerPage"
-      @onChange="onPageChanged"
-    >
-      <select
-        class="focus:outline-none bg-none"
-        v-model="perPage"
-        @change="loadData"
-      >
-        <option>10</option>
-        <option>25</option>
-        <option>50</option>
-        <option>100</option>
-        <option>200</option>
-        <option>500</option>
-        <option>1000</option>
-      </select>
-    </Pagination>
-  </div>
+  <!-- Your template code -->
 </template>
 
 <script setup>
@@ -180,7 +85,7 @@ const downloadCsv = () => {
       newObj[key] = obj[key] ?? "";
     }
     return {
-      "SL No": index + 1,
+      "SL No": `00200000${index + 1}`, // Custom serial number
       "First Name": newObj.name,
       "Last Name": newObj.lastName,
       Phone: newObj.phone,
