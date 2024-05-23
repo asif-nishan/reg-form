@@ -24,8 +24,8 @@
     <div class="mt-8 flow-root" v-if="!loading && userList?.length">
       <div class="overflow-x-auto">
         <div class="inline-block min-w-full align-middle">
-          <table class="min-w-full divide-y divide-gray-300">
-            <thead class="bg-gray-50">
+          <table class="min-w-full divide-y divide-gray-300 border">
+            <thead class="bg-gray-100">
               <tr>
                 <th class="table-header">SL No.</th>
                 <th class="table-header">First Name</th>
@@ -47,7 +47,7 @@
                 <td class="table-data">{{ index + 1 }}</td>
                 <td class="table-data">{{ person.name }}</td>
                 <td class="table-data">{{ person.lastName }}</td>
-                <td class="table-data">{{ `+880${person.phone}` }}</td>
+                <td class="table-data">{{ person.phone }}</td>
                 <td class="table-data">{{ person.address }}</td>
                 <td class="table-data">{{ person.birthDate }}</td>
                 <td class="table-data">{{ person.email }}</td>
@@ -165,13 +165,13 @@ const downloadCsv = () => {
       "SL No": index + 1,
       "First Name": newObj.name,
       "Last Name": newObj.lastName,
-      Phone: `+880${newObj.phone}`,
+      Phone: newObj.phone,
       Email: newObj.email,
       Address: newObj.address,
       "Date of Birth": newObj.birthDate,
       "Blood Group": newObj.bloodGroup,
       Occupation: newObj.occupation,
-      "Family Members": `"${newObj.familyMembers}"`, // Ensure Family Members is formatted as text
+      "Family Members": newObj.familyMembers,
       "Complimentary Card": newObj.hasComplimentaryCard ? "Yes" : "No",
       Gender: newObj.gender,
       Anniversary: newObj.anniversary,
@@ -198,9 +198,9 @@ onMounted(() => {
   @apply relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:outline-none focus:ring-blue-500 sm:text-sm focus:border-blue-500;
 }
 .table-header {
-  @apply py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0;
+  @apply py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0 border-b;
 }
 .table-data {
-  @apply whitespace-nowrap px-3 py-4 text-sm text-gray-500;
+  @apply whitespace-nowrap px-3 py-4 text-sm text-gray-500 border-b;
 }
 </style>
