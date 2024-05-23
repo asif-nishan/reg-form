@@ -171,7 +171,7 @@ const downloadCsv = () => {
       "Date of Birth": newObj.birthDate,
       "Blood Group": newObj.bloodGroup,
       Occupation: newObj.occupation,
-      "Family Member": newObj.familyMembers,
+      "Family Members": `"${newObj.familyMembers}"`, // Ensure Family Members is formatted as text
       "Complimentary Card": newObj.hasComplimentaryCard ? "Yes" : "No",
       Gender: newObj.gender,
       Anniversary: newObj.anniversary,
