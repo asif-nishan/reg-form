@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto shadow-2xl p-4">
-    <section class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 sm:p-6 lg:p-8">
-      <div class="flex flex-col gap-2">
+    <section class="flex flex-wrap items-center justify-between p-4 sm:p-6 lg:p-8">
+      <div class="w-full md:w-auto mb-4 md:mb-0">
         <input
           type="text"
           v-model="searchPhoneQuery"
@@ -10,7 +10,6 @@
           class="input-class"
         />
       </div>
-      <div></div>
       <div class="text-right">
         <button
           class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
@@ -22,25 +21,21 @@
     </section>
     <div class="mt-8" v-if="!loading && userList?.length">
       <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-300">
-          <thead class="bg-gray-50">
+        <table class="min-w-full">
+          <thead>
             <tr>
               <th v-for="header in tableHeaders" :key="header" class="table-header">{{ header }}</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-200 bg-white">
-            <tr
-              v-for="(person, index) in userList"
-              :key="person.id"
-              :class="index % 2 === 0 ? 'bg-gray-50' : 'bg-white'"
-            >
-              <td v-for="(value, key) in person" :key="key" class="table-data">{{ formatData(key, value) }}</td>
+          <tbody>
+            <tr v-for="(person, index) in userList" :key="person.id" :class="index % 2 === 0 ? 'bg-gray-50' : 'bg-white'">
+              <td v-for="(value, key) in person" :key="key" v-if="tableHeaders.includes(key)" class="table-data">{{ formatData(key, value) }}</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
-    <div class="text-center flex items-center justify-center mt-8" v-else-if="loading || userList.length === 0">
+    <div class="text-center mt-8" v-else-if="loading || userList.length === 0">
       {{ loading ? 'Loading' : 'No data' }}
     </div>
     <Pagination
