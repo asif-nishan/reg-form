@@ -25,7 +25,7 @@
       <div class="overflow-x-auto">
         <div class="inline-block min-w-full align-middle">
           <table class="min-w-full divide-y divide-gray-300">
-            <thead>
+            <thead class="bg-gray-50">
               <tr>
                 <th class="table-header">SL No.</th>
                 <th class="table-header">First Name</th>
@@ -42,12 +42,12 @@
                 <th class="table-header">Anniversary</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-gray-200">
+            <tbody class="divide-y divide-gray-200 bg-white">
               <tr v-for="(person, index) in userList" :key="person.id">
                 <td class="table-data">{{ index + 1 }}</td>
                 <td class="table-data">{{ person.name }}</td>
                 <td class="table-data">{{ person.lastName }}</td>
-                <td class="table-data">{{ person.phone }}</td>
+                <td class="table-data">{{ `+880${person.phone}` }}</td>
                 <td class="table-data">{{ person.address }}</td>
                 <td class="table-data">{{ person.birthDate }}</td>
                 <td class="table-data">{{ person.email }}</td>
@@ -165,7 +165,7 @@ const downloadCsv = () => {
       "SL No": index + 1,
       "First Name": newObj.name,
       "Last Name": newObj.lastName,
-      Phone: newObj.phone,
+      Phone: `+880${newObj.phone}`,
       Email: newObj.email,
       Address: newObj.address,
       "Date of Birth": newObj.birthDate,
