@@ -179,7 +179,7 @@ const downloadCsv = () => {
       newObj[key] = obj[key] ?? "";
     }
     return {
-      "SL No": (200000 + index + 1).toString().padStart(8, '0'), // Custom serial number
+      "SL No": "'" + (200000 + index + 1).toString().padStart(8, '0'),
       "First Name": newObj.name,
       "Last Name": newObj.lastName,
       Phone: newObj.phone,
