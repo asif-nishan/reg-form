@@ -26,7 +26,7 @@
         <table class="min-w-full divide-y divide-gray-300">
           <thead class="bg-gray-50">
             <tr>
-              <th class="table-header">SL No.</th>
+              <th class="table-header">Card No.</th>
               <th class="table-header">First Name</th>
               <th class="table-header">Last Name</th>
               <th class="table-header">Phone</th>
@@ -179,7 +179,7 @@ const downloadCsv = () => {
       newObj[key] = obj[key] ?? "";
     }
     return {
-      "SL No": "'" + (200000 + index + 1).toString().padStart(8, '0'),
+      "Card No": "'" + (200000 + index + 1).toString().padStart(8, '0'),
       "First Name": newObj.name,
       "Last Name": newObj.lastName,
       Phone: newObj.phone,
