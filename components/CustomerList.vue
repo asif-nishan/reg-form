@@ -1,15 +1,18 @@
 <template>
   <div class="container mx-auto shadow-2xl p-4">
-    <section class="flex flex-wrap items-center justify-between p-4 sm:p-6 lg:p-8">
-      <div class="w-full md:w-auto mb-4 md:mb-0">
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 sm:p-6 lg:p-8">
+      <div class="flex flex-col gap-2">
         <input
           type="text"
+          id="searchPhone"
           v-model="searchPhoneQuery"
           @input="debouncedSearch"
           placeholder="Search by phone number"
           class="input-class"
         />
+        
       </div>
+      <div></div>
       <div class="text-right">
         <button
           class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
@@ -21,22 +24,53 @@
     </section>
     <div class="mt-8" v-if="!loading && userList?.length">
       <div class="overflow-x-auto">
-        <table class="min-w-full">
-          <thead>
+        <table class="min-w-full divide-y divide-gray-300">
+          <thead class="bg-gray-50">
             <tr>
-              <th v-for="header in tableHeaders" :key="header" class="table-header">{{ header }}</th>
+              <th class="table-header">SL No.</th>
+              <th class="table-header">First Name</th>
+              <th class="table-header">Last Name</th>
+              <th class="table-header">Phone</th>
+              <th class="table-header">Address</th>
+              <th class="table-header">Dob</th>
+              <th class="table-header">Email</th>
+              <th class="table-header">Blood Group</th>
+              <th class="table-header">Occupation</th>
+              <th class="table-header">Family Members</th>
+              <th class="table-header">Gender</th>
+              <th class="table-header">Complimentary Card</th>
+              <th class="table-header">Anniversary</th>
             </tr>
           </thead>
-          <tbody>
-            <tr v-for="(person, index) in userList" :key="person.id" :class="index % 2 === 0 ? 'bg-gray-50' : 'bg-white'">
-              <td v-for="(value, key) in person" :key="key" v-if="tableHeaders.includes(key)" class="table-data">{{ formatData(key, value) }}</td>
+          <tbody class="divide-y divide-gray-200 bg-white">
+            <tr
+              v-for="(person, index) in userList"
+              :key="person.id"
+              :class="index % 2 === 0 ? 'bg-gray-50' : 'bg-white'"
+            >
+              <td class="table-data">{{ index + 1 }}</td>
+              <td class="table-data">{{ person.name }}</td>
+              <td class="table-data">{{ person.lastName }}</td>
+              <td class="table-data">{{ person.phone }}</td>
+              <td class="table-data">{{ person.address }}</td>
+              <td class="table-data">{{ person.birthDate }}</td>
+              <td class="table-data">{{ person.email }}</td>
+              <td class="table-data">{{ person.bloodGroup }}</td>
+              <td class="table-data">{{ person.occupation }}</td>
+              <td class="table-data">{{ person.familyMembers }}</td>
+              <td class="table-data">{{ person.gender }}</td>
+              <td class="table-data">{{ person.hasComplimentaryCard ? "Yes" : "No" }}</td>
+              <td class="table-data">{{ person.anniversary }}</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
-    <div class="text-center mt-8" v-else-if="loading || userList.length === 0">
-      {{ loading ? 'Loading' : 'No data' }}
+    <div
+      class="text-center flex items-center justify-center mt-8"
+      v-else-if="loading || userList.length == 0"
+    >
+      {{ loading ? "Loading" : "No data" }}
     </div>
     <Pagination
       class="mt-6"
@@ -46,18 +80,28 @@
       :totalPerPage="totalPerPage"
       @onChange="onPageChanged"
     >
-      <select class="focus:outline-none bg-none" v-model="perPage" @change="loadData">
-        <option v-for="option in perPageOptions" :key="option">{{ option }}</option>
+      <select
+        class="focus:outline-none bg-none"
+        v-model="perPage"
+        @change="loadData"
+      >
+        <option>10</option>
+        <option>25</option>
+        <option>50</option>
+        <option>100</option>
+        <option>200</option>
+        <option>500</option>
+        <option>1000</option>
       </select>
     </Pagination>
   </div>
 </template>
 
 <script setup>
-import { mkConfig, generateCsv, download } from 'export-to-csv';
-import { ref, computed, onMounted } from 'vue';
-import { useDebounce } from '@/hooks/useDebounce';
-import Pagination from './Pagination';
+import { mkConfig, generateCsv, download } from "export-to-csv";
+import { ref, computed, onMounted } from "vue";
+import { useDebounce } from "@/hooks/useDebounce";
+import Pagination from "./Pagination";
 
 const config = useRuntimeConfig();
 const page = ref(1);
@@ -65,27 +109,43 @@ const lastPage = ref(1);
 const total = ref(0);
 const perPage = ref(10);
 const totalPerPage = ref(0);
-const searchPhoneQuery = ref('');
+
+const url = computed(() => {
+  return `${config.public.BASE_URL}user?per_page=${perPage.value}&page=${page.value}`;
+});
+
+const inputClass =
+  "relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:outline-none focus:ring-blue-500 sm:text-sm focus:border-blue-500";
+
+const searchPhoneQuery = ref("");
+const searchNameQuery = ref("");
 const loading = ref(true);
 const userList = ref([]);
 
 const loadData = () => {
   loading.value = true;
-  const token = window.localStorage.getItem('ACCESS_TOKEN');
-  let finalUrl = `${config.public.BASE_URL}user?per_page=${perPage.value}&page=${page.value}`;
-
+  const token = window.localStorage.getItem("ACCESS_TOKEN");
+  let finalUrl = url.value;
   if (searchPhoneQuery.value) {
     finalUrl += `&phone=${searchPhoneQuery.value}`;
   }
+  if (searchNameQuery.value) {
+    finalUrl += `&name=${searchNameQuery.value}`;
+  }
 
-  fetch(finalUrl, { headers: { Authorization: `Bearer ${token}` } })
+  // Logging the final URL to check the parameters
+  console.log("Final URL:", finalUrl);
+
+  fetch(finalUrl, {
+    headers: { Authorization: `Bearer ${token}` },
+  })
     .then((response) => {
-      if (response.status === 401) {
-        window.localStorage.removeItem('LOGIN_ACCOUNT');
-        window.localStorage.removeItem('ACCESS_TOKEN');
-        window.location.href = '/login';
+      if (response.status == 401) {
+        window.localStorage.removeItem("LOGIN_ACCOUNT");
+        window.localStorage.removeItem("ACCESS_TOKEN");
+        window.location.href = "/login";
       }
-      if (!response.ok) throw new Error('Network response was not ok');
+      if (!response.ok) throw new Error("Network response was not ok");
       return response.json();
     })
     .then((res) => {
@@ -99,7 +159,7 @@ const loadData = () => {
     })
     .catch((error) => {
       loading.value = false;
-      console.error('There was a problem with the fetch operation:', error);
+      console.error("There was a problem with the fetch operation:", error);
     });
 };
 
@@ -114,64 +174,38 @@ const onPageChanged = (p) => {
 };
 
 const downloadCsv = () => {
-  const formattedData = userList.value.map((person, index) => {
-    const formattedPerson = {};
-    for (const key in person) {
-      formattedPerson[key] = person[key] ?? '';
+  const newArray = userList.value.map((obj, index) => {
+    const newObj = {};
+    for (const key in obj) {
+      newObj[key] = obj[key] ?? "";
     }
     return {
-      'SL No': index + 1,
-      'First Name': formattedPerson.name,
-      'Last Name': formattedPerson.lastName,
-      Phone: formattedPerson.phone,
-      Email: formattedPerson.email,
-      Address: formattedPerson.address,
-      'Date of Birth': formattedPerson.birthDate,
-      'Blood Group': formattedPerson.bloodGroup,
-      Occupation: formattedPerson.occupation,
-      'Family Members': `"${formattedPerson.familyMembers}"`,
-      'Complimentary Card': formattedPerson.hasComplimentaryCard ? 'Yes' : 'No',
-      Gender: formattedPerson.gender,
-      Anniversary: formattedPerson.anniversary,
+      "SL No": index + 1,
+      "First Name": newObj.name,
+      "Last Name": newObj.lastName,
+      Phone: newObj.phone,
+      Email: newObj.email,
+      Address: newObj.address,
+      "Date of Birth": newObj.birthDate,
+      "Blood Group": newObj.bloodGroup,
+      Occupation: newObj.occupation,
+      "Family Members": `"${newObj.familyMembers}"`, // Ensure Family Members is formatted as text
+      "Complimentary Card": newObj.hasComplimentaryCard ? "Yes" : "No",
+      Gender: newObj.gender,
+      Anniversary: newObj.anniversary,
     };
   });
-  const csv = generateCsv(mkConfig({ useKeysAsHeaders: true, filename: 'customer-list' }))(formattedData);
-  download(mkConfig({ useKeysAsHeaders: true, filename: 'customer-list' }))(csv);
+  const csv = generateCsv(mkConfig({ useKeysAsHeaders: true, filename: "customer-list" }))(newArray);
+  download(mkConfig({ useKeysAsHeaders: true, filename: "customer-list" }))(csv);
 };
 
 onMounted(() => {
-  if (window.localStorage.getItem('ACCESS_TOKEN')) {
+  if (window.localStorage.getItem("ACCESS_TOKEN")) {
     loadData();
   } else {
-    window.location.href = '/login';
+    window.location.href = "/login";
   }
 });
-
-const formatData = (key, value) => {
-  // If value is boolean, return "Yes" or "No" instead of true or false
-  if (typeof value === 'boolean') {
-    return value ? 'Yes' : 'No';
-  }
-  return value;
-};
-
-const tableHeaders = [
-  'SL No.',
-  'First Name',
-  'Last Name',
-  'Phone',
-  'Address',
-  'DOB',
-  'Email',
-  'Blood Group',
-  'Occupation',
-  'Family Members',
-  'Gender',
-  'Complimentary Card',
-  'Anniversary',
-];
-
-const perPageOptions = [10, 25, 50, 100, 200, 500, 1000];
 </script>
 
 <style scoped>
