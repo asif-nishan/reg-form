@@ -1,13 +1,21 @@
 <template>
   <div class="container mx-auto shadow-2xl p-4">
-    <section class="grid grid-cols-3 p-4 sm:p-6 lg:p-8">
-      <div class="flex gap-2">
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 sm:p-6 lg:p-8">
+      <div class="flex flex-col gap-2">
         <input
           type="text"
-          id="search"
-          v-model="searchQuery"
+          id="searchPhone"
+          v-model="searchPhoneQuery"
           @input="debouncedSearch"
           placeholder="Search by phone number"
+          class="input-class"
+        />
+        <input
+          type="text"
+          id="searchName"
+          v-model="searchNameQuery"
+          @input="debouncedSearch"
+          placeholder="Search by first name"
           class="input-class"
         />
       </div>
@@ -116,16 +124,20 @@ const url = computed(() => {
 const inputClass =
   "relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:outline-none focus:ring-blue-500 sm:text-sm focus:border-blue-500";
 
-const searchQuery = ref("");
+const searchPhoneQuery = ref("");
+const searchNameQuery = ref("");
 const loading = ref(true);
 const userList = ref([]);
 
-const loadData = (query = "") => {
+const loadData = () => {
   loading.value = true;
   const token = window.localStorage.getItem("ACCESS_TOKEN");
   let finalUrl = url.value;
-  if (searchQuery.value) {
-    finalUrl += `&phone=${query}`;
+  if (searchPhoneQuery.value) {
+    finalUrl += `&phone=${searchPhoneQuery.value}`;
+  }
+  if (searchNameQuery.value) {
+    finalUrl += `&name=${searchNameQuery.value}`;
   }
   fetch(finalUrl, {
     headers: { Authorization: `Bearer ${token}` },
@@ -155,7 +167,7 @@ const loadData = (query = "") => {
 };
 
 const search = () => {
-  loadData(searchQuery.value);
+  loadData();
 };
 const debouncedSearch = useDebounce(search, 500);
 
