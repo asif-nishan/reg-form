@@ -25,7 +25,7 @@
       <div class="overflow-x-auto">
         <div class="inline-block min-w-full align-middle">
           <table class="min-w-full divide-y divide-gray-300">
-            <thead>
+            <thead class="bg-gray-50">
               <tr>
                 <th class="table-header">SL No.</th>
                 <th class="table-header">First Name</th>
@@ -42,8 +42,8 @@
                 <th class="table-header">Anniversary</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-gray-200">
-              <tr v-for="(person, index) in userList" :key="person.id">
+            <tbody class="divide-y divide-gray-200 bg-white">
+              <tr v-for="(person, index) in userList" :key="person.id" :class="index % 2 === 0 ? 'bg-gray-50' : 'bg-white'">
                 <td class="table-data">{{ index + 1 }}</td>
                 <td class="table-data">{{ person.name }}</td>
                 <td class="table-data">{{ person.lastName }}</td>
