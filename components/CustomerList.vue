@@ -43,11 +43,11 @@
           </thead>
           <tbody class="divide-y divide-gray-200 bg-white">
             <tr
-              v-for="(person, index) in userList"
+              v-for="(person, index) in sortedUserList"
               :key="person.id"
               :class="index % 2 === 0 ? 'bg-gray-50' : 'bg-white'"
             >
-              <td class="table-data">{{ (200000 + index + 1).toString().padStart(8, '0') }}</td> <!-- Custom serial number -->
+              <td class="table-data">{{ generateCardNumber(index) }}</td>
               <td class="table-data">{{ person.name }}</td>
               <td class="table-data">{{ person.lastName }}</td>
               <td class="table-data">{{ person.phone }}</td>
@@ -95,6 +95,7 @@
     </Pagination>
   </div>
 </template>
+
 
 <script setup>
 import { mkConfig, generateCsv, download } from "export-to-csv";
@@ -172,6 +173,15 @@ const onPageChanged = (p) => {
   loadData();
 };
 
+// Computed property to sort userList in descending order
+const sortedUserList = computed(() => {
+  return [...userList.value].sort((a, b) => b.id - a.id);
+});
+
+const generateCardNumber = (index) => {
+  return (200000 + (userList.value.length - index)).toString().padStart(8, '0');
+};
+
 const downloadCsv = () => {
   const newArray = userList.value.map((obj, index) => {
     const newObj = {};
@@ -179,7 +189,7 @@ const downloadCsv = () => {
       newObj[key] = obj[key] ?? "";
     }
     return {
-      "Card No": "'" + (200000 + index + 1).toString().padStart(8, '0'),
+      "Card No": "'" + (200000 + (userList.value.length - index)).toString().padStart(8, '0'),
       "First Name": newObj.name,
       "Last Name": newObj.lastName,
       Phone: newObj.phone,
@@ -206,6 +216,7 @@ onMounted(() => {
   }
 });
 </script>
+
 
 
 <style scoped>
