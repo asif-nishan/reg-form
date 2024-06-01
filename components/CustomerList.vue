@@ -47,7 +47,7 @@
               :key="person.id"
               :class="index % 2 === 0 ? 'bg-gray-50' : 'bg-white'"
             >
-              <td class="table-data">{{ generateCardNumber(index) }}</td>
+              <td class="table-data">{{ generateCardNumber(person.id) }}</td>
               <td class="table-data">{{ person.name }}</td>
               <td class="table-data">{{ person.lastName }}</td>
               <td class="table-data">{{ person.phone }}</td>
@@ -95,7 +95,6 @@
     </Pagination>
   </div>
 </template>
-
 
 <script setup>
 import { mkConfig, generateCsv, download } from "export-to-csv";
@@ -178,8 +177,9 @@ const sortedUserList = computed(() => {
   return [...userList.value].sort((a, b) => b.id - a.id);
 });
 
-const generateCardNumber = (index) => {
-  return (200000 + (userList.value.length - index)).toString().padStart(8, '0');
+// Generate card number based on user ID
+const generateCardNumber = (id) => {
+  return (200000 + id).toString().padStart(8, '0');
 };
 
 const downloadCsv = () => {
@@ -189,7 +189,7 @@ const downloadCsv = () => {
       newObj[key] = obj[key] ?? "";
     }
     return {
-      "Card No": "'" + (200000 + (userList.value.length - index)).toString().padStart(8, '0'),
+      "Card No": "'" + generateCardNumber(obj.id),
       "First Name": newObj.name,
       "Last Name": newObj.lastName,
       Phone: newObj.phone,
@@ -216,8 +216,6 @@ onMounted(() => {
   }
 });
 </script>
-
-
 
 <style scoped>
 .container {
