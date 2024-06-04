@@ -131,9 +131,6 @@
                   {{ person.lastName }}
                 </td>
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                  {{ person.member_id }}
-                </td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                   {{ person.phone }}
                 </td>
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
@@ -163,7 +160,9 @@
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                   {{ person.anniversary }}
                 </td>
-               
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  {{ person.member_id }}
+                </td>
               </tr>
             </tbody>
           </table>
