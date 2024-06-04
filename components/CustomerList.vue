@@ -1,76 +1,194 @@
 <template>
-  <div class="container mx-auto shadow-2xl p-4">
-    <section class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 sm:p-6 lg:p-8">
-      <div class="flex flex-col gap-2">
+  <div class="px-4 sm:px-6 lg:px-8 max-w-[90rem] mx-auto shadow-2xl">
+    <section class="grid grid-cols-3">
+      <div class="flex gap-2">
         <input
           type="text"
-          id="searchPhone"
-          v-model="searchPhoneQuery"
+          id="search"
+          v-model="searchQuery"
           @input="debouncedSearch"
           placeholder="Search by phone number"
-          class="input-class"
+          class="relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:outline-none focus:ring-blue-500 sm:text-sm focus:border-blue-500"
         />
       </div>
       <div></div>
       <div class="text-right">
         <button
-          class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
+          class="bg-[#89BC40] hover:bg-[#89BC40] text-white px-4 py-2 rounded"
           @click="downloadCsv"
         >
           Export CSV
         </button>
       </div>
     </section>
-    <div class="mt-8" v-if="!loading && userList?.length">
-      <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-300">
-          <thead class="bg-gray-50">
-            <tr>
-              <th class="table-header">Card No.</th>
-              <th class="table-header">First Name</th>
-              <th class="table-header">Last Name</th>
-              <th class="table-header">Phone</th>
-              <th class="table-header">Address</th>
-              <th class="table-header">Dob</th>
-              <th class="table-header">Email</th>
-              <th class="table-header">Blood Group</th>
-              <th class="table-header">Occupation</th>
-              <th class="table-header">Family Members</th>
-              <th class="table-header">Gender</th>
-              <th class="table-header">Complimentary Card</th>
-              <th class="table-header">Anniversary</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-200 bg-white">
-            <tr
-              v-for="(person, index) in sortedUserList"
-              :key="person.id"
-              :class="index % 2 === 0 ? 'bg-gray-50' : 'bg-white'"
-            >
-              <td class="table-data">{{ generateCardNumber(person.id) }}</td>
-              <td class="table-data">{{ person.name }}</td>
-              <td class="table-data">{{ person.lastName }}</td>
-              <td class="table-data">{{ person.phone }}</td>
-              <td class="table-data">{{ person.address }}</td>
-              <td class="table-data">{{ person.birthDate }}</td>
-              <td class="table-data">{{ person.email }}</td>
-              <td class="table-data">{{ person.bloodGroup }}</td>
-              <td class="table-data">{{ person.occupation }}</td>
-              <td class="table-data">{{ person.familyMembers }}</td>
-              <td class="table-data">{{ person.gender }}</td>
-              <td class="table-data">{{ person.hasComplimentaryCard ? "Yes" : "No" }}</td>
-              <td class="table-data">{{ person.anniversary }}</td>
-            </tr>
-          </tbody>
-        </table>
+    <div class="mt-8 flow-root" v-if="!loading && userList?.length">
+      <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+          <table class="min-w-full divide-y divide-gray-300">
+            <thead>
+              <tr>
+                <th
+                  scope="col"
+                  class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                >
+                  SL No.
+                </th>
+                <th
+                  scope="col"
+                  class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                >
+                  First Name
+                </th>
+                <th
+                  scope="col"
+                  class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
+                >
+                  Last Name
+                </th>
+                <th
+                  scope="col"
+                  class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
+                  Phone
+                </th>
+                <th
+                  scope="col"
+                  class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
+                  Address
+                </th>
+                <th
+                  scope="col"
+                  class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
+                  Dob
+                </th>
+                <th
+                  scope="col"
+                  class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
+                  Email
+                </th>
+                <th
+                  scope="col"
+                  class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
+                  Blood Group
+                </th>
+                <th
+                  scope="col"
+                  class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
+                  Occupation
+                </th>
+                <th
+                  scope="col"
+                  class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
+                  Family Members
+                </th>
+                <th
+                  scope="col"
+                  class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
+                  Gender
+                </th>
+                <th
+                  scope="col"
+                  class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
+                  Complimentary Card
+                </th>
+                <th
+                  scope="col"
+                  class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
+                Anniversary
+                </th>
+                <th
+                  scope="col"
+                  class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
+                Membership ID
+                </th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              <tr v-for="(person, index) in userList" :key="person.id">
+                <td
+                  class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0"
+                >
+                  {{ index + 1 }}
+                </td>
+                <td
+                  class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0"
+                >
+                  {{ person.name }}
+                </td>
+                <td
+                  class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0"
+                >
+                  {{ person.lastName }}
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  {{ person.member_id }}
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  {{ person.phone }}
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  {{ person.address }}
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  {{ person.birthDate }}
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  {{ person.email }}
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  {{ person.bloodGroup }}
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  {{ person.occupation }}
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  {{ person.familyMembers }}
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  {{ person.gender }}
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  {{ person.hasComplimentaryCard ? "Yes" : "No" }}
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  {{ person.anniversary }}
+                </td>
+               
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-    <div
-      class="text-center flex items-center justify-center mt-8"
-      v-else-if="loading || userList.length == 0"
+    <!-- <div
+      class="text-center flex items-center justify-center"
+      v-else-if="loading"
     >
-      {{ loading ? "Loading" : "No data" }}
+      Loading
+    </div> -->
+    <div
+      class="text-center flex items-center justify-center"
+      v-else-if="userList.length == 0"
+    >
+      {{loading ? 'Loading' : 'No data'}}
     </div>
+    <div
+      class="text-center flex items-center justify-center"
+      v-else
+    >
+      {{'Loading'}}
+    </div>
+
     <Pagination
       class="mt-6"
       :perPage="perPage"
@@ -98,10 +216,16 @@
 
 <script setup>
 import { mkConfig, generateCsv, download } from "export-to-csv";
-import { ref, computed, onMounted } from "vue";
+
+import { ref } from "vue";
+// import debounce from "lodash.debounce";
 import { useDebounce } from "@/hooks/useDebounce";
 import Pagination from "./Pagination";
-
+definePageMeta({
+  // layout: "Default",
+  // middleware:['protected'],
+});
+const route = useRoute();
 const config = useRuntimeConfig();
 const page = ref(1);
 const lastPage = ref(1);
@@ -110,86 +234,118 @@ const perPage = ref(10);
 const totalPerPage = ref(0);
 
 const url = computed(() => {
-  return `${config.public.BASE_URL}user?per_page=${perPage.value}&page=${page.value}`;
+  return (
+    config.public.BASE_URL + `user?per_page=${perPage.value}&page=${page.value}`
+  );
 });
-
+const style = "";
 const inputClass =
   "relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:outline-none focus:ring-blue-500 sm:text-sm focus:border-blue-500";
+const defaultData = {
+  name: "",
+  address: "",
+  phone: "",
+  birthDate: "",
+  email: "",
+  occupation: "",
+  familyMembers: "",
+  gender: "",
+  anniversary: "",
+  hasComplimentaryCard: false,
+};
+const csvConfig = mkConfig({ useKeysAsHeaders: true, filename: "customer-list" });
 
-const searchPhoneQuery = ref("");
-const searchNameQuery = ref("");
+const searchQuery = ref("");
+const errors = ref({});
 const loading = ref(true);
 const userList = ref([]);
+const success = ref(false);
+const userId = ref(null);
+const otp = ref("");
 
-const loadData = () => {
+const formattedData = computed(() => {
+  return {
+    ...formData.value,
+    hasComplimentaryCard: !!formData.value.hasComplimentaryCard == "Yes",
+  };
+});
+const router = useRouter();
+const loadData = (query = "") => {
   loading.value = true;
-  const token = window.localStorage.getItem("ACCESS_TOKEN");
+  errors.otpError = "";
+  const token =
+    window != null && window != undefined
+      ? window.localStorage.getItem("ACCESS_TOKEN")
+      : null;
   let finalUrl = url.value;
-  if (searchPhoneQuery.value) {
-    finalUrl += `&phone=${searchPhoneQuery.value}`;
+  if (searchQuery.value != "") {
+    finalUrl += `&phone=${query}`;
   }
-  if (searchNameQuery.value) {
-    finalUrl += `&name=${searchNameQuery.value}`;
-  }
-
-  // Logging the final URL to check the parameters
-  console.log("Final URL:", finalUrl);
-
   fetch(finalUrl, {
-    headers: { Authorization: `Bearer ${token}` },
+    headers: { Authorization: "Bearer " + token },
   })
     .then((response) => {
+      console.log(response, response.status);
       if (response.status == 401) {
         window.localStorage.removeItem("LOGIN_ACCOUNT");
         window.localStorage.removeItem("ACCESS_TOKEN");
         window.location.href = "/login";
       }
-      if (!response.ok) throw new Error("Network response was not ok");
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
       return response.json();
     })
     .then((res) => {
+      // Process the retrieved data
       const { data, meta } = res;
       userList.value = data;
       loading.value = false;
+
       page.value = meta.current_page;
       lastPage.value = meta.last_page;
       total.value = meta.total;
-      totalPerPage.value = data.length;
+      totalPerPage.value = data?.length;
     })
     .catch((error) => {
+      // Handle any errors that occurred during the fetch
       loading.value = false;
       console.error("There was a problem with the fetch operation:", error);
     });
 };
-
-const search = () => {
-  loadData();
+const search = async () => {
+  loadData(searchQuery.value);
 };
+// const debouncedSearch = debounce(search, 500);
 const debouncedSearch = useDebounce(search, 500);
-
 const onPageChanged = (p) => {
   page.value = p;
   loadData();
 };
-
-// Computed property to sort userList in descending order
-const sortedUserList = computed(() => {
-  return [...userList.value].sort((a, b) => b.id - a.id);
-});
-
-// Generate card number based on user ID
-const generateCardNumber = (id) => {
-  return (200000 + id).toString().padStart(8, '0');
-};
-
 const downloadCsv = () => {
   const newArray = userList.value.map((obj, index) => {
+    // Iterate over each property in the object
     const newObj = {};
     for (const key in obj) {
-      newObj[key] = obj[key] ?? "";
+      // Check if the property value is null
+      if (obj[key] == null || obj[key] == undefined) {
+        newObj[key] = "";
+      } else if (obj[key] == 0) {
+        console.log(obj[key], typeof obj[key]);
+        if (typeof obj[key] == 'number') {
+          newObj[key] = "No";
+        }
+        else {
+          newObj[key] = obj[key]
+        }
+      } else if (obj[key] == 1) {
+        newObj[key] = "Yes";
+      } else {
+        newObj[key] = obj[key].toString();
+      }
     }
     return {
-      "Card No": "'" + generateCardNumber(obj.id),
+      "SL No": index + 1,
       "First Name": newObj.name,
       "Last Name": newObj.lastName,
       Phone: newObj.phone,
@@ -198,37 +354,21 @@ const downloadCsv = () => {
       "Date of Birth": newObj.birthDate,
       "Blood Group": newObj.bloodGroup,
       Occupation: newObj.occupation,
-      "Family Members": `"${newObj.familyMembers}"`, // Ensure Family Members is formatted as text
-      "Complimentary Card": newObj.hasComplimentaryCard ? "Yes" : "No",
+      "Family Member": newObj.familyMembers,
+      "Complimentary Card": newObj.hasComplimentaryCard,
       Gender: newObj.gender,
       Anniversary: newObj.anniversary,
+      'Membership ID': newObj.member_id,
     };
   });
-  const csv = generateCsv(mkConfig({ useKeysAsHeaders: true, filename: "customer-list" }))(newArray);
-  download(mkConfig({ useKeysAsHeaders: true, filename: "customer-list" }))(csv);
+  const csv = generateCsv(csvConfig)(newArray);
+  download(csvConfig)(csv);
 };
-
 onMounted(() => {
-  if (window.localStorage.getItem("ACCESS_TOKEN")) {
+  if (window?.localStorage?.getItem("ACCESS_TOKEN")) {
     loadData();
   } else {
     window.location.href = "/login";
   }
 });
 </script>
-
-<style scoped>
-.container {
-  max-width: 90rem;
-  padding: 1rem;
-}
-.input-class {
-  @apply relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:outline-none focus:ring-blue-500 sm:text-sm focus:border-blue-500;
-}
-.table-header {
-  @apply py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0;
-}
-.table-data {
-  @apply whitespace-nowrap px-3 py-4 text-sm text-gray-500;
-}
-</style>
