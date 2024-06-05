@@ -46,8 +46,8 @@
             <tbody class="divide-y divide-gray-200">
               <tr v-for="(person, index) in userList" :key="person.id">
                 <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{{ index + 1 }}</td>
-                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{{ person.name }}</td>
-                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{{ person.lastName }}</td>
+                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl0">{{ person.name }}</td>
+                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl0">{{ person.lastName }}</td>
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ person.phone }}</td>
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ person.address }}</td>
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ person.birthDate }}</td>
@@ -156,8 +156,8 @@ const downloadCsv = () => {
     for (const key in obj) {
       if (obj[key] === null || obj[key] === undefined) {
         newObj[key] = "";
-      } else if (key === 'member_id' && obj[key] === 0) {
-        newObj[key] = "0";
+      } else if (key === 'member_id') {
+        newObj[key] = formatMembershipId(obj[key]);
       } else if (obj[key] === 1) {
         newObj[key] = "Yes";
       } else {
@@ -186,7 +186,7 @@ const downloadCsv = () => {
 };
 
 const formatMembershipId = (id) => {
-  return id === 0 ? "0" : id.toString();
+  return id.toString().padStart(6, '0');
 };
 
 onMounted(() => {
