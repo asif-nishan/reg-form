@@ -176,17 +176,17 @@ const downloadCsv = () => {
       "SL No": index + 1,
       "First Name": newObj.name,
       "Last Name": newObj.lastName,
-      Phone: newObj.phone,
-      Email: newObj.email,
-      Address: newObj.address,
+      "Membership ID": `"${newObj.member_id}"`,  // Enclose in double quotes
+      "Phone": `"${newObj.phone}"`,               // Enclose in double quotes
+      "Email": newObj.email,
+      "Address": newObj.address,
       "Date of Birth": newObj.birthDate,
       "Blood Group": newObj.bloodGroup,
-      Occupation: newObj.occupation,
-      "Family Member": newObj.familyMembers,
+      "Occupation": newObj.occupation,
+      "Family Members": `"${newObj.familyMembers}"`, // Enclose in double quotes
       "Complimentary Card": newObj.hasComplimentaryCard,
-      Gender: newObj.gender,
-      Anniversary: newObj.anniversary,
-      "Membership ID": newObj.member_id,
+      "Gender": newObj.gender,
+      "Anniversary": newObj.anniversary,
     };
   });
   const csv = generateCsv(csvConfig)(newArray);
@@ -201,3 +201,4 @@ onMounted(() => {
   }
 });
 </script>
+
