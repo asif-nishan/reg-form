@@ -272,8 +272,8 @@
                   <span class="ml-2">No</span>
                 </label>
               </div>
-              <div class="grid gap-2 md:gap-1 px-4 py-2 md:px-0" :style="style">
-  <label :class="brandColor" class="block font-bold">Member type</label>
+              <div class="grid gap-2 md:gap-1" :style="style">
+  <label :class="brandColor" class="block font-bold">Membership Type <span class="text-red-500">*</span></label>
   <select
     v-model="memberType"
     class="focus:outline-none bg-none w-full"
