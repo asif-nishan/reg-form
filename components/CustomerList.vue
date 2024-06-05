@@ -49,6 +49,12 @@
                   scope="col"
                   class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                 >
+                Membership ID
+                </th>
+                <th
+                  scope="col"
+                  class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
                   Phone
                 </th>
                 <th
@@ -105,12 +111,7 @@
                 >
                 Anniversary
                 </th>
-                <th
-                  scope="col"
-                  class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                >
-                Membership ID
-                </th>
+               
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
@@ -129,6 +130,9 @@
                   class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0"
                 >
                   {{ person.lastName }}
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  {{ person.member_id }}
                 </td>
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                   {{ person.phone }}
@@ -160,9 +164,7 @@
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                   {{ person.anniversary }}
                 </td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                  {{ person.member_id }}
-                </td>
+                
               </tr>
             </tbody>
           </table>
