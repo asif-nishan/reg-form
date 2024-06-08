@@ -686,9 +686,14 @@ const submitForm = () => {
 };
 // Function to display success notification with member ID
 const notify = (memberId) => {
-  toast.success("Thanks for the registration. Your member ID is " + memberId, {
-    autoClose: 2000,
-  }); // ToastOptions
+  if (memberId) {
+    toast.success("Thanks for the registration. Your member ID is " + memberId, {
+      autoClose: 2000,
+    }); // ToastOptions
+  } else {
+    console.error("Member ID is undefined or null");
+    // Handle this scenario accordingly
+  }
 };
 
 // Function to refresh CAPTCHA
@@ -698,6 +703,12 @@ const refreshCaptcha = () => {
 
 // Function to submit OTP form
 const submitOtpForm = () => {
+  // Check if userId is defined
+  if (!userId.value) {
+    console.error("User ID is not defined");
+    return; // Exit the function if userId is not defined
+  }
+
   // Options for the fetch request
   const options = {
     method: "PUT",
@@ -723,14 +734,6 @@ const submitOtpForm = () => {
       setTimeout(() => {
         loading.value = false;
       }, 1000);
-      // Clear form values and reset state
-      otp.value = null;
-      userId.value = null;
-      regFormSubmitted.value = false;
-      errors.value = {};
-      isAgree.value = false;
-      userCaptcha.value = "";
-      refreshCaptcha();
       // Call notify function with member ID
       notify(data.memberId);
     })
