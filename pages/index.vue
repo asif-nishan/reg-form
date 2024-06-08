@@ -565,7 +565,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 import { ArrowPathIcon } from '@heroicons/vue/20/solid';
@@ -702,12 +702,6 @@ const submitOtpForm = () => {
     });
 };
 
-watch(memberType, (newVal) => {
-  if (newVal === 'New') {
-    formData.value.member_id = '';
-  }
-});
-
 onMounted(refreshCaptcha);
 
 function generateRandomString(length) {
@@ -719,7 +713,6 @@ function generateRandomString(length) {
   return result;
 }
 </script>
-
 
 <style scoped>
 .aaa {
