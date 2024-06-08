@@ -737,15 +737,21 @@ const submitOtpForm = () => {
       // Handle error from the server or network
     });
 };
+
+const refreshCaptcha = () => {
+  captchaText.value = generateRandomString(4); // Generate a new captcha text
+};
+
+// Function to generate a random string
 const generateRandomString = (length) => {
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let result = "";
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
   for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * characters.length));
   }
   return result;
 };
+
 
 onMounted(() => {
   refreshCaptcha();
