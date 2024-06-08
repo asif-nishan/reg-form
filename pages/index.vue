@@ -565,155 +565,195 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
-import { toast } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
-import { ArrowPathIcon } from '@heroicons/vue/20/solid';
-
+import { ref, onMounted } from "vue";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
+import { ArrowPathIcon } from "@heroicons/vue/20/solid";
+definePageMeta({
+  layout: "empty",
+});
 const config = useRuntimeConfig();
-const url = config.public.BASE_URL + 'user';
-
+const url = config.public.BASE_URL + "user";
+const style = "";
 const inputClass =
-  'relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:outline-none focus:ring-blue-500 sm:text-sm focus:border-blue-500';
-
+  "relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:outline-none focus:ring-blue-500 sm:text-sm focus:border-blue-500";
 const defaultData = {
-  name: '',
-  lastName: '',
-  address: '',
-  phone: '',
-  birthDate: '',
-  email: '',
-  occupation: '',
-  familyMembers: '',
-  gender: '',
-  anniversary: '',
-  bloodGroup: '',
+  name: "",
+  lastName: "",
+  address: "",
+  phone: "",
+  birthDate: "",
+  email: "",
+  occupation: "",
+  familyMembers: "",
+  gender: "",
+  anniversary: "",
+  bloodGroup: "",
   hasComplimentaryCard: false,
-  member_id: '',
+  member_id: "",
 };
 
-const formData = ref({ ...defaultData });
-const memberType = ref('New');
 const showTermsPopup = ref(false);
-const errors = ref({});
-const loading = ref(false);
-const isAgree = ref(false);
-const regFormSubmitted = ref(false);
-const userId = ref(null);
-const otp = ref('');
-const brandColor = ref('');
-const captchaText = ref('');
-const userCaptcha = ref('');
 
-const formattedData = computed(() => {
-  const obj = {
-    ...formData.value,
-    hasComplimentaryCard: formData.value.hasComplimentaryCard === 'Yes',
-  };
-  if (memberType.value === 'New') {
-    delete obj.member_id;
-  }
-  return obj;
-});
-
-const showCaptchaError = computed(() => {
-  if (!userCaptcha.value || !captchaText.value) {
-    return false;
-  }
-  return userCaptcha.value.toLowerCase() !== captchaText.value.toLowerCase();
-});
-
-const disabled = computed(() => {
-  return !isAgree.value || loading.value || !userCaptcha.value || showCaptchaError.value;
-});
-
-const submitForm = () => {
-  const options = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(formattedData.value),
-  };
-  loading.value = true;
-  errors.value = {};
-
-  fetch(url, options)
-    .then(response => response.json())
-    .then(data => {
-      if (!data.success) {
-        errors.value = data.errors || {};
-        throw new Error('Submission failed');
-      }
-      userId.value = data.data.id;
-      formData.value = { ...defaultData };
-      memberType.value = 'New'; // Reset membership type
-      regFormSubmitted.value = true;
-    })
-    .finally(() => {
-      loading.value = false;
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
-};
-
-const refreshCaptcha = () => {
-  captchaText.value = generateRandomString(4); // Generate a 4-character random string
-};
-
+// Function to toggle the visibility of the terms pop-up
 const toggleTermsPopup = () => {
   if (isAgree.value) {
     showTermsPopup.value = !showTermsPopup.value;
   }
 };
 
-const submitOtpForm = () => {
+const TERMS_AND_CONDITION_LINK =
+  "https://reg.kbakery.com.bd/terms&condition?fbclid=IwAR3ZHAuljA8NIQrStmVdluorz8VY4EWvitgrQvpPS5kMCxeboy4-Zgzdvw4_aem_AX98AXyHp5MERWziwe-z6zha2l6MmwgUPO7OD5sOi7nSXQpUMafwcgnJUTJ8BMLSL-5bWtuyrL95BUSdxRFX2OTY";
+const formData = ref({ ...defaultData });
+
+const errors = ref({});
+const loading = ref(false);
+const isAgree = ref(false);
+const regFormSubmitted = ref(false);
+const success = ref(false);
+const userId = ref(null);
+const otp = ref("");
+const brandColor = ref("");
+const memberType = ref("New");
+
+const formattedData = computed(() => {
+  const obj = {
+    ...formData.value,
+    hasComplimentaryCard: !!formData.value.hasComplimentaryCard == "Yes",
+  };
+  if (memberType.value == "New") {
+    delete obj.member_id;
+  }
+  return obj;
+});
+const captchaText = ref("");
+const userCaptcha = ref("");
+const showCaptchaError = computed(() => {
+  if (!userCaptcha.value || !captchaText.value) {
+    return false;
+  }
+  if (userCaptcha.value.toLowerCase() === captchaText.value.toLowerCase()) {
+    return false;
+  }
+  return true;
+});
+const disabled = computed(() => {
+  return (
+    !isAgree.value ||
+    loading.value ||
+    !userCaptcha.value ||
+    showCaptchaError.value
+  );
+});
+
+const submitForm = () => {
   const options = {
-    method: 'PUT',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({ code: otp.value }),
+    body: JSON.stringify(formattedData.value),
   };
   loading.value = true;
-  errors.value = {};
-
-  fetch(url + '/' + userId.value, options)
-    .then(response => response.json())
-    .then(data => {
-      if (!data.success) {
-        errors.value.otpError = data.message || 'Invalid OTP';
-        throw new Error('OTP verification failed');
+  errors.otpError = "";
+  // Send POST request using fetch
+  fetch(url, options)
+    .then((response) => {
+      if (!response.ok) {
+        return response.json().then((data) => {
+          errors.value = data;
+          console.log(data, "data error");
+          throw new Error(data);
+        });
       }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Success:", data);
+      userId.value = data.data.id;
+      formData.value = { ...defaultData };
+      setTimeout(() => {
+        loading.value = false;
+      }, 1000);
+      regFormSubmitted.value = true;
+    })
+    .catch((error) => {
+      setTimeout(() => {
+        loading.value = false;
+      }, 1000);
+      // Handle error from the server or network
+    });
+};
+const notify = () => {
+  toast.success("Thanks for the registration.", {
+    autoClose: 2000,
+  }); // ToastOptions
+};
+// Function to refresh CAPTCHA
+const refreshCaptcha = () => {
+  captchaText.value = generateRandomString(4); // Generate a 6-character random string
+};
+const submitOtpForm = () => {
+  // Options for the fetch request
+  const options = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      code: otp.value,
+    }),
+  };
+  loading.value = true;
+  errors.value.otpError = "";
+  // Send POST request using fetch
+  fetch(url + "/" + userId.value, options)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Success:", data);
+      setTimeout(() => {
+        loading.value = false;
+      }, 1000);
+      // regFormSubmitted.value = false
+      errors.value.otpError = "";
+      otp.value = null;
       userId.value = null;
       regFormSubmitted.value = false;
-      otp.value = '';
+      errors.value = {};
       isAgree.value = false;
-      userCaptcha.value = '';
+      userCaptcha.value = "";
       refreshCaptcha();
-      toast.success('Thanks for the registration.', { autoClose: 2000 });
+      notify();
     })
-    .finally(() => {
-      loading.value = false;
-    })
-    .catch(error => {
-      console.error('Error:', error);
+    .catch((error) => {
+      console.error("Error:", error);
+      setTimeout(() => {
+        loading.value = false;
+      }, 1000);
+      errors.value.otpError = "Otp not matched";
+      // Handle error from the server or network
     });
 };
 
-onMounted(refreshCaptcha);
-
-function generateRandomString(length) {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let result = '';
+const generateRandomString = (length) => {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
   for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * characters.length));
   }
   return result;
-}
-</script>
+};
 
+onMounted(() => {
+  refreshCaptcha();
+});
+</script>
 <style scoped>
 .aaa {
   /* background-image: url("assets/bg-image-1.jpg"); */
