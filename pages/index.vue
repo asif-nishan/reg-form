@@ -687,7 +687,7 @@ const submitForm = () => {
 const notify = (memberId) => {
   const paddedMemberId = String(memberId).padStart(8, '0');
   toast.success(`Thanks for the registration. Your Member ID is ${paddedMemberId}.`, {
-    autoClose: 2000,
+    autoClose: 7000,
   }); // ToastOptions
 };
 
