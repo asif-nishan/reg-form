@@ -685,62 +685,58 @@ const submitForm = () => {
     });
 };
 const notify = (memberId) => {
-  const paddedMemberId = memberId.toString().padStart(8, "0");
+  const paddedMemberId = String(memberId).padStart(8, '0');
   toast.success(`Thanks for the registration. Your Member ID is ${paddedMemberId}.`, {
-    autoClose: 10000,
+    autoClose: 2000,
   }); // ToastOptions
 };
-// Function to refresh CAPTCHA
-const refreshCaptcha = () => {
-  captchaText.value = generateRandomString(4); // Generate a 6-character random string
-};
+
 const submitOtpForm = () => {
   // Options for the fetch request
   const options = {
-    method: "PUT",
+    method: 'PUT',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       code: otp.value,
     }),
   };
   loading.value = true;
-  errors.value.otpError = "";
+  errors.value.otpError = '';
   // Send POST request using fetch
-  fetch(url + "/" + userId.value, options)
+  fetch(url + '/' + userId.value, options)
     .then((response) => {
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        throw new Error('Network response was not ok');
       }
       return response.json();
     })
     .then((data) => {
-      console.log("Success:", data);
+      console.log('Success:', data);
       setTimeout(() => {
         loading.value = false;
       }, 1000);
       // regFormSubmitted.value = false
-      errors.value.otpError = "";
+      errors.value.otpError = '';
       otp.value = null;
       userId.value = null;
       regFormSubmitted.value = false;
       errors.value = {};
       isAgree.value = false;
-      userCaptcha.value = "";
+      userCaptcha.value = '';
       refreshCaptcha();
-      notify();
+      notify(data.data.member_id); // Notify with padded member ID
     })
     .catch((error) => {
-      console.error("Error:", error);
+      console.error('Error:', error);
       setTimeout(() => {
         loading.value = false;
       }, 1000);
-      errors.value.otpError = "Otp not matched";
+      errors.value.otpError = 'OTP not matched';
       // Handle error from the server or network
     });
 };
-
 const generateRandomString = (length) => {
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
