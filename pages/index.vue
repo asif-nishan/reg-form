@@ -526,7 +526,6 @@ definePageMeta({
 
 const config = useRuntimeConfig();
 const url = config.public.BASE_URL + "user";
-const style = "";
 const inputClass = "relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:outline-none focus:ring-blue-500 sm:text-sm focus:border-blue-500";
 
 const defaultData = {
@@ -545,13 +544,6 @@ const defaultData = {
   member_id: "",
 };
 
-const showTermsPopup = ref(false);
-const toggleTermsPopup = () => {
-  if (isAgree.value) {
-    showTermsPopup.value = !showTermsPopup.value;
-  }
-};
-
 const TERMS_AND_CONDITION_LINK = "https://reg.kbakery.com.bd/terms&condition?fbclid=IwAR3ZHAuljA8NIQrStmVdluorz8VY4EWvitgrQvpPS5kMCxeboy4-Zgzdvw4_aem_AX98AXyHp5MERWziwe-z6zha2l6MmwgUPO7OD5sOi7nSXQpUMafwcgnJUTJ8BMLSL-5bWtuyrL95BUSdxRFX2OTY";
 const formData = ref({ ...defaultData });
 
@@ -562,21 +554,9 @@ const regFormSubmitted = ref(false);
 const success = ref(false);
 const userId = ref(null);
 const otp = ref("");
-const brandColor = ref("");
-const memberType = ref("New");
-
-const formattedData = computed(() => {
-  const obj = {
-    ...formData.value,
-    hasComplimentaryCard: !!formData.value.hasComplimentaryCard == "Yes",
-  };
-  if (memberType.value == "New") {
-    delete obj.member_id;
-  }
-  return obj;
-});
 const captchaText = ref("");
 const userCaptcha = ref("");
+
 const showCaptchaError = computed(() => {
   if (!userCaptcha.value || !captchaText.value) {
     return false;
@@ -586,6 +566,7 @@ const showCaptchaError = computed(() => {
   }
   return true;
 });
+
 const disabled = computed(() => {
   return (
     !isAgree.value ||
@@ -596,12 +577,13 @@ const disabled = computed(() => {
 });
 
 const submitForm = () => {
+  console.log("Submitting registration form..."); // Debugging log
   const options = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(formattedData.value),
+    body: JSON.stringify(formData.value),
   };
   loading.value = true;
   errors.otpError = "";
@@ -622,8 +604,10 @@ const submitForm = () => {
         loading.value = false;
       }, 1000);
       regFormSubmitted.value = true;
+      console.log("Registration form submitted successfully."); // Debugging log
     })
     .catch((error) => {
+      console.error("Error submitting registration form:", error); // Debugging log
       loading.value = false;
       regFormSubmitted.value = false;
     });
@@ -636,6 +620,7 @@ const resetForm = () => {
 };
 
 const submitOtpForm = () => {
+  console.log("Submitting OTP form..."); // Debugging log
   const options = {
     method: "POST",
     headers: {
@@ -666,20 +651,22 @@ const submitOtpForm = () => {
         loading.value = false;
         resetForm();
       }, 1000);
+      console.log("OTP form submitted successfully."); // Debugging log
     })
     .catch((error) => {
+      console.error("Error submitting OTP form:", error); // Debugging log
       loading.value = false;
     });
 };
 
 const refreshCaptcha = () => {
   captchaText.value = generateCaptcha(6);
+  console.log("Captcha refreshed:", captchaText.value); // Debugging log
 };
 
 const generateCaptcha = (length) => {
   let result = "";
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   const charactersLength = characters.length;
   let counter = 0;
   while (counter < length) {
