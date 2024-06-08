@@ -684,9 +684,10 @@ const submitForm = () => {
       // Handle error from the server or network
     });
 };
-const notify = () => {
-  toast.success("Thanks for the registration.", {
-    autoClose: 2000,
+const notify = (memberId) => {
+  const paddedMemberId = memberId.toString().padStart(8, "0");
+  toast.success(`Thanks for the registration. Your Member ID is ${paddedMemberId}.`, {
+    autoClose: 10000,
   }); // ToastOptions
 };
 // Function to refresh CAPTCHA
