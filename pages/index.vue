@@ -276,7 +276,7 @@
                 <label
                   :class="brandColor"
                   class="block font-bold"
-                  >Member type</label
+                  >Membership type <span class="text-red-500">*</span></label
                 >
                 <select
                   v-model="memberType"
@@ -294,7 +294,7 @@
                 :style="style"
               >
                 <label for="Number" :class="brandColor" class="block font-bold"
-                  >Existing membership Id <span class="text-red-500">*</span></label
+                  >Existing Membership ID <span class="text-red-500">*</span></label
                 >
                 <input
                   type="text"
