@@ -1,11 +1,10 @@
 <template>
   <section style="background-image: linear-gradient(45deg, #daeaa5, #89bbef)">
     <section
-    class="flex flex-col justify-center max-w-[90rem] mx-auto items-center scrollable-container"
+      class="flex flex-col justify-center max-w-[40rem] mx-auto items-center scrollable-container"
       :class="!regFormSubmitted ? 'md:h-screen' : 'h-screen'"
       s
     >
-    
       <div
         class="md:min-w-[30rem] grid grid-cols-0 md:my-0 md:mx-auto shadow-2xl bg-white m-4"
         :class="!regFormSubmitted ? '' : 'pb-4'"
@@ -14,14 +13,14 @@
           <nav class="sticky top-0 bg-white z-[101]">
             <center class="md:py-0 py-4">
               <img
-                width="160"
-                height="10"
+                width="220"
+                height="50"
                 src="/assets/khulshi.png"
                 class="bg-white hidden md:block"
               />
               <img
                 width="150"
-                height="100"
+                height="10"
                 src="/assets/khulshi.png"
                 class="bg-white sm:block md:hidden"
               />
@@ -274,18 +273,21 @@
                 </label>
               </div>
               <div class="grid gap-2 md:gap-1" :style="style">
-  <label :class="brandColor" class="block font-bold">Membership Type <span class="text-red-500">*</span></label>
-  <select
-    v-model="memberType"
-    class="focus:outline-none bg-none w-full"
-    :class="inputClass"
-    style="background: none"
-  >
-    <option value="New">New</option>
-    <option value="Old">Old</option>
-  </select>
-</div>
-
+                <label
+                  :class="brandColor"
+                  class="block font-bold"
+                  >Member type</label
+                >
+                <select
+                  v-model="memberType"
+                  class="focus:outline-none bg-none"
+                  :class="inputClass"
+                  style="background: none"
+                >
+                  <option value="New">New</option>
+                  <option value="Old">Old</option>
+                </select>
+              </div>
               <div
                 v-if="memberType == 'Old'"
                 class="grid gap-2 md:gap-1"
@@ -686,7 +688,7 @@ const submitForm = () => {
 };
 const notify = (id) => {
   toast.success("Thanks For Registration.Your Membership Id is: " + id, {
-    autoClose: 9000,
+    autoClose: 2000,
   }); // ToastOptions
 };
 // Function to refresh CAPTCHA
@@ -715,7 +717,7 @@ const submitOtpForm = () => {
       return response.json();
     })
     .then((data) => {
-      console.log("Success:", data);
+      console.log("Success:", data, data.data.member_id);
       setTimeout(() => {
         loading.value = false;
       }, 1000);
@@ -728,7 +730,7 @@ const submitOtpForm = () => {
       isAgree.value = false;
       userCaptcha.value = "";
       refreshCaptcha();
-      notify();
+      notify(data?.data?.member_id);
     })
     .catch((error) => {
       console.error("Error:", error);
