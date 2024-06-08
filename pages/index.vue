@@ -684,31 +684,16 @@ const submitForm = () => {
       // Handle error from the server or network
     });
 };
-// Function to display success notification with member ID
-const notify = (memberId) => {
-  if (memberId) {
-    toast.success("Thanks for the registration. Your member ID is " + memberId, {
-      autoClose: 2000,
-    }); // ToastOptions
-  } else {
-    console.error("Member ID is undefined or null");
-    // Handle this scenario accordingly
-  }
+const notify = (id) => {
+  toast.success("Thanks For Registration.Your Membership Id is: " + id, {
+    autoClose: 9000,
+  }); // ToastOptions
 };
-
 // Function to refresh CAPTCHA
 const refreshCaptcha = () => {
   captchaText.value = generateRandomString(4); // Generate a 6-character random string
 };
-
-// Function to submit OTP form
 const submitOtpForm = () => {
-  // Check if userId is defined
-  if (!userId.value) {
-    console.error("User ID is not defined");
-    return; // Exit the function if userId is not defined
-  }
-
   // Options for the fetch request
   const options = {
     method: "PUT",
@@ -734,8 +719,16 @@ const submitOtpForm = () => {
       setTimeout(() => {
         loading.value = false;
       }, 1000);
-      // Call notify function with member ID
-      notify(data.memberId);
+      // regFormSubmitted.value = false
+      errors.value.otpError = "";
+      otp.value = null;
+      userId.value = null;
+      regFormSubmitted.value = false;
+      errors.value = {};
+      isAgree.value = false;
+      userCaptcha.value = "";
+      refreshCaptcha();
+      notify();
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -747,7 +740,6 @@ const submitOtpForm = () => {
     });
 };
 
-// Function to generate random string
 const generateRandomString = (length) => {
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -757,7 +749,6 @@ const generateRandomString = (length) => {
   }
   return result;
 };
-
 
 onMounted(() => {
   refreshCaptcha();
