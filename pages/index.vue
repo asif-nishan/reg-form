@@ -474,6 +474,8 @@
             </div>
           </form>
 
+          
+
           <form v-else @submit.prevent="submitOtpForm" class="grid gap-2 md:gap-1">
             <!-- OTP Form Content -->
             <div class="grid gap-2 md:gap-1">
