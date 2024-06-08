@@ -13,8 +13,8 @@
           <nav class="sticky top-0 bg-white z-[101]">
             <center class="md:py-0 py-4">
               <img
-                width="220"
-                height="50"
+                width="160"
+                height="10"
                 src="/assets/khulshi.png"
                 class="bg-white hidden md:block"
               />
