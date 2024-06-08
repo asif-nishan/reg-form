@@ -684,15 +684,19 @@ const submitForm = () => {
       // Handle error from the server or network
     });
 };
-const notify = () => {
-  toast.success("Thanks for the registration.", {
+// Function to display success notification with member ID
+const notify = (memberId) => {
+  toast.success("Thanks for the registration. Your member ID is " + memberId, {
     autoClose: 2000,
   }); // ToastOptions
 };
+
 // Function to refresh CAPTCHA
 const refreshCaptcha = () => {
   captchaText.value = generateRandomString(4); // Generate a 6-character random string
 };
+
+// Function to submit OTP form
 const submitOtpForm = () => {
   // Options for the fetch request
   const options = {
@@ -719,8 +723,7 @@ const submitOtpForm = () => {
       setTimeout(() => {
         loading.value = false;
       }, 1000);
-      // regFormSubmitted.value = false
-      errors.value.otpError = "";
+      // Clear form values and reset state
       otp.value = null;
       userId.value = null;
       regFormSubmitted.value = false;
@@ -728,7 +731,8 @@ const submitOtpForm = () => {
       isAgree.value = false;
       userCaptcha.value = "";
       refreshCaptcha();
-      notify();
+      // Call notify function with member ID
+      notify(data.memberId);
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -740,6 +744,7 @@ const submitOtpForm = () => {
     });
 };
 
+// Function to generate random string
 const generateRandomString = (length) => {
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -749,6 +754,7 @@ const generateRandomString = (length) => {
   }
   return result;
 };
+
 
 onMounted(() => {
   refreshCaptcha();
