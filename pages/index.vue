@@ -1,10 +1,11 @@
 <template>
   <section style="background-image: linear-gradient(45deg, #daeaa5, #89bbef)">
     <section
-    class="flex flex-col justify-center items-center min-h-screen px-4"
+    class="flex flex-col justify-center max-w-[90rem] mx-auto items-center scrollable-container"
       :class="!regFormSubmitted ? 'md:h-screen' : 'h-screen'"
       s
     >
+    
       <div
         class="md:min-w-[30rem] grid grid-cols-0 md:my-0 md:mx-auto shadow-2xl bg-white m-4"
         :class="!regFormSubmitted ? '' : 'pb-4'"
@@ -473,51 +474,17 @@
             </div>
           </form>
 
-          <form
-            v-else
-            @submit.prevent="submitOtpForm"
-            class="grid gap-2 md:gap-1"
-          >
-            <!-- Name -->
-            <div class="grid gap-2 md:gap-1" :style="style">
-              <label for="name" class="block font-bold">OTP</label>
-              <input
-                type="text"
-                id="name"
-                v-model="otp"
-                :class="inputClass"
-                placeholder="e.g. 1234"
-                required
-              />
-              <span v-if="errors?.otp" class="text-red-500">{{
-                errors.otp
-              }}</span>
+          <form v-else @submit.prevent="submitOtpForm" class="grid gap-2 md:gap-1">
+            <!-- OTP Form Content -->
+            <div class="grid gap-2 md:gap-1">
+              <label for="otp" class="block font-bold">OTP</label>
+              <input type="text" id="otp" v-model="otp" :class="inputClass" placeholder="e.g. 1234" required />
+              <span v-if="errors.otp" class="text-red-500">{{ errors.otp }}</span>
             </div>
 
             <div class="flex justify-end gap-2 md:gap-1">
-              <button
-                type="button"
-                @click="
-                  () => {
-                    success = false;
-                    isAgree = false;
-                    regFormSubmitted = false;
-                    errors.otpError = '';
-                    userCaptcha = '';
-                    otp = '';
-                    errors = {};
-                    refreshCaptcha();
-                  }
-                "
-                class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded mt-4"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                :disabled="otp == '' || otp == null || loading"
-                class="bg-[#89BC40] hover:bg-[#6d992f] text-white px-4 py-2 rounded mt-4"
-              >
+              <button type="button" @click="resetForm" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded mt-4">Cancel</button>
+              <button type="submit" :disabled="otp === '' || otp === null || loading" class="bg-[#89BC40] hover:bg-[#6d992f] text-white px-4 py-2 rounded mt-4">
                 {{ !loading ? "Submit" : "Processing" }}
               </button>
             </div>
@@ -527,34 +494,16 @@
           </form>
         </section>
       </div>
-      <section class="w-full px-[3.25rem] pb-4 md:pb-0 md:mt-2" style="">
+      <section class="w-full px-[3.25rem] pb-4 md:pb-0 md:mt-2">
         <ul role="list" class="flex gap-2 justify-center">
           <li class="list-item-3">
-            <a
-              target="blank"
-              href="https://www.facebook.com/mykhulshimart?mibextid=LQQJ4d"
-              class="link-block-2 w-inline-block"
-              ><img
-                src="/assets/facebook.svg"
-                loading="lazy"
-                alt=""
-                class="w-[30px]"
-              />
-              <!-- <h1 class="text-[#283516]">Facebook</h1> -->
+            <a target="blank" href="https://www.facebook.com/mykhulshimart?mibextid=LQQJ4d" class="link-block-2 w-inline-block">
+              <img src="/assets/facebook.svg" loading="lazy" alt="" class="w-[30px]" />
             </a>
           </li>
           <li class="list-item-3">
-            <a
-              target="blank"
-              href=" https://www.instagram.com/khulshimart"
-              class="link-block-2 w-inline-block"
-              ><img
-                src="/assets/instagram.svg"
-                loading="lazy"
-                alt=""
-                class="w-[30px]"
-              />
-              <!-- <h1 class="text-[#283516]">Instagram</h1> -->
+            <a target="blank" href="https://www.instagram.com/khulshimart" class="link-block-2 w-inline-block">
+              <img src="/assets/instagram.svg" loading="lazy" alt="" class="w-[30px]" />
             </a>
           </li>
         </ul>
@@ -564,18 +513,20 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 import { ArrowPathIcon } from "@heroicons/vue/20/solid";
+
 definePageMeta({
   layout: "empty",
 });
+
 const config = useRuntimeConfig();
 const url = config.public.BASE_URL + "user";
 const style = "";
-const inputClass =
-  "relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:outline-none focus:ring-blue-500 sm:text-sm focus:border-blue-500";
+const inputClass = "relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:outline-none focus:ring-blue-500 sm:text-sm focus:border-blue-500";
+
 const defaultData = {
   name: "",
   lastName: "",
@@ -593,16 +544,13 @@ const defaultData = {
 };
 
 const showTermsPopup = ref(false);
-
-// Function to toggle the visibility of the terms pop-up
 const toggleTermsPopup = () => {
   if (isAgree.value) {
     showTermsPopup.value = !showTermsPopup.value;
   }
 };
 
-const TERMS_AND_CONDITION_LINK =
-  "https://reg.kbakery.com.bd/terms&condition?fbclid=IwAR3ZHAuljA8NIQrStmVdluorz8VY4EWvitgrQvpPS5kMCxeboy4-Zgzdvw4_aem_AX98AXyHp5MERWziwe-z6zha2l6MmwgUPO7OD5sOi7nSXQpUMafwcgnJUTJ8BMLSL-5bWtuyrL95BUSdxRFX2OTY";
+const TERMS_AND_CONDITION_LINK = "https://reg.kbakery.com.bd/terms&condition?fbclid=IwAR3ZHAuljA8NIQrStmVdluorz8VY4EWvitgrQvpPS5kMCxeboy4-Zgzdvw4_aem_AX98AXyHp5MERWziwe-z6zha2l6MmwgUPO7OD5sOi7nSXQpUMafwcgnJUTJ8BMLSL-5bWtuyrL95BUSdxRFX2OTY";
 const formData = ref({ ...defaultData });
 
 const errors = ref({});
@@ -655,20 +603,17 @@ const submitForm = () => {
   };
   loading.value = true;
   errors.otpError = "";
-  // Send POST request using fetch
   fetch(url, options)
     .then((response) => {
       if (!response.ok) {
         return response.json().then((data) => {
           errors.value = data;
-          console.log(data, "data error");
           throw new Error(data);
         });
       }
       return response.json();
     })
     .then((data) => {
-      console.log("Success:", data);
       userId.value = data.data.id;
       formData.value = { ...defaultData };
       setTimeout(() => {
@@ -677,76 +622,76 @@ const submitForm = () => {
       regFormSubmitted.value = true;
     })
     .catch((error) => {
-      setTimeout(() => {
-        loading.value = false;
-      }, 1000);
-      // Handle error from the server or network
+      loading.value = false;
+      regFormSubmitted.value = false;
     });
 };
-const notify = () => {
-  toast.success("Thanks for the registration.", {
-    autoClose: 2000,
-  }); // ToastOptions
+
+const resetForm = () => {
+  formData.value = { ...defaultData };
+  isAgree.value = false;
+  regFormSubmitted.value = false;
 };
-// Function to refresh CAPTCHA
-const refreshCaptcha = () => {
-  captchaText.value = generateRandomString(4); // Generate a 6-character random string
-};
+
 const submitOtpForm = () => {
-  // Options for the fetch request
   const options = {
-    method: "PUT",
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      code: otp.value,
+      user_id: userId.value,
+      otp: otp.value,
     }),
   };
   loading.value = true;
-  errors.value.otpError = "";
-  // Send POST request using fetch
-  fetch(url + "/" + userId.value, options)
+  fetch(url + "/verify_otp", options)
     .then((response) => {
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        return response.json().then((data) => {
+          errors.value.otpError = data.detail;
+          throw new Error(data.detail);
+        });
       }
       return response.json();
     })
     .then((data) => {
-      console.log("Success:", data);
+      otp.value = "";
+      success.value = true;
+      const memberId = data.data.member_id.toString().padStart(8, "0");
+      notify(`Congratulations! Your Member ID is ${memberId}`);
       setTimeout(() => {
         loading.value = false;
+        resetForm();
       }, 1000);
-      // regFormSubmitted.value = false
-      errors.value.otpError = "";
-      otp.value = null;
-      userId.value = null;
-      regFormSubmitted.value = false;
-      errors.value = {};
-      isAgree.value = false;
-      userCaptcha.value = "";
-      refreshCaptcha();
-      notify();
     })
     .catch((error) => {
-      console.error("Error:", error);
-      setTimeout(() => {
-        loading.value = false;
-      }, 1000);
-      errors.value.otpError = "Otp not matched";
-      // Handle error from the server or network
+      loading.value = false;
     });
 };
 
-const generateRandomString = (length) => {
+const refreshCaptcha = () => {
+  captchaText.value = generateCaptcha(6);
+};
+
+const generateCaptcha = (length) => {
+  let result = "";
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let result = "";
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  const charactersLength = characters.length;
+  let counter = 0;
+  while (counter < length) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    counter += 1;
   }
   return result;
+};
+
+const notify = (message) => {
+  toast.success(message, {
+    position: "top-center",
+    autoClose: 5000,
+  });
 };
 
 onMounted(() => {
