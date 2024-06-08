@@ -688,7 +688,7 @@ const submitForm = () => {
 };
 const notify = (id) => {
   toast.success("Thanks For Registration.Your Membership Id is: " + id, {
-    autoClose: 2000,
+    autoClose: 9000,
   }); // ToastOptions
 };
 // Function to refresh CAPTCHA
