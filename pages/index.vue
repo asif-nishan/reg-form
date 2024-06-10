@@ -30,6 +30,39 @@
             <section class="grid gap-2 grid-cols-1 md:grid-cols-2 md:pb-0">
               <!-- Name -->
               <div class="grid gap-2 md:gap-1" :style="style">
+                <label
+                  :class="brandColor"
+                  class="block font-bold"
+                  >Please Select Membership type <span class="text-red-500">*</span></label
+                >
+                <select
+                  v-model="memberType"
+                  class="focus:outline-none bg-none"
+                  :class="inputClass"
+                  style="background: none"
+                >
+                
+                  <option value="New">New</option>
+                  <option value="Old">Old</option>
+                </select>
+                
+              </div>
+              <div
+                v-if="memberType == 'Old'"
+                class="grid gap-2 md:gap-1"
+                :style="style"
+              >
+                <label for="Number" :class="brandColor" class="block font-bold"
+                  >Existing Membership ID <span class="text-red-500">*</span></label
+                >
+                <input
+                  type="text"
+                  v-model="formData.member_id"
+                  :class="inputClass"
+                  placeholder="e.g. 12345"
+                />
+              </div>
+              <div class="grid gap-2 md:gap-1" :style="style">
                 <label for="name" :class="brandColor" class="block font-bold"
                   >First Name <span class="text-red-500">*</span></label
                 >
@@ -64,14 +97,14 @@
               <!-- Phone -->
               <div class="grid gap-2 md:gap-1" :style="style">
                 <label for="phone" :class="brandColor" class="block font-bold"
-                  >Phone <span class="text-red-500">*</span></label
+                  >Mobile Number <span class="text-red-500">*</span></label
                 >
                 <input
                   type="text"
                   id="phone"
                   v-model="formData.phone"
                   :class="inputClass"
-                  placeholder="e.g. +880123456789"
+                  placeholder="Pleas Enter Valid Mobile Number e.g. 0123456789"
                   required
                 />
                 <!-- <span v-if="errors.phone" class="text-red-500">{{
@@ -272,37 +305,7 @@
                   <span class="ml-2">No</span>
                 </label>
               </div>
-              <div class="grid gap-2 md:gap-1" :style="style">
-                <label
-                  :class="brandColor"
-                  class="block font-bold"
-                  >Membership type <span class="text-red-500">*</span></label
-                >
-                <select
-                  v-model="memberType"
-                  class="focus:outline-none bg-none"
-                  :class="inputClass"
-                  style="background: none"
-                >
-                  <option value="New">New</option>
-                  <option value="Old">Old</option>
-                </select>
-              </div>
-              <div
-                v-if="memberType == 'Old'"
-                class="grid gap-2 md:gap-1"
-                :style="style"
-              >
-                <label for="Number" :class="brandColor" class="block font-bold"
-                  >Existing Membership ID <span class="text-red-500">*</span></label
-                >
-                <input
-                  type="text"
-                  v-model="formData.member_id"
-                  :class="inputClass"
-                  placeholder="e.g. 12345"
-                />
-              </div>
+              
             </section>
             <div class="grid gap-2 md:gap-1 mt-4" :style="style">
               <section class="grid gap-2 md:gap-2 md:grid-cols-2">
@@ -412,47 +415,20 @@
                       Terms & Conditions
                     </h2>
                     <!-- Add content here -->
-                    <ul
-                      class="list-disc pl-4 md:pl-6 text-xs md:text-sm text-left"
-                    >
-                      <li>Special K Card Membership is non-transferable.</li>
-                      <li>
-                        Membership is free of cost for our patrons. However,
-                        Khulshi Mart reserves the right to accept/decline/defer
-                        any membership application.
-                      </li>
-                      <li>
-                        Special K Card can not be used for credit purchases.
-                        This is only a membership card.
-                      </li>
-                      <li>Points earned cannot be redeemed as cash refunds.</li>
-                      <li>Members will accumulate points in each purchase.</li>
-                      <li>
-                        Points earned can only be redeemed against general
-                        purchases or specific product rebates.
-                      </li>
-                      <li>
-                        Points can be adjusted within 7 days of purchase but
-                        receipt must be shown.
-                      </li>
-                      <li>
-                        Membership will be canceled if not purchased for six
-                        months and also downgrade his/her Membership Category.
-                      </li>
-                      <li>
-                        All notices relative to the membership shall be sent to
-                        the Member's email address or Phone Number provided
-                        during the registration process.
-                      </li>
-                      <li>
-                        The Member may extend his/her concerns to Khulshi Mart
-                        by emailing info@khulshimart.com.
-                      </li>
-                      <li>
-                        Khulshi Mart reserves the right to change the Terms &
-                        Conditions of membership without any prior notice.
-                      </li>
-                    </ul>
+                    <ul class="list-disc pl-4 md:pl-6 text-xs md:text-sm text-left">
+  <li class="text-left">Special K Card Membership is non-transferable.</li>
+  <li class="text-left">Membership is free of cost for our patrons. However, Khulshi Mart reserves the right to accept/decline/defer any membership application.</li>
+  <li class="text-left">Special K Card can not be used for credit purchases. This is only a membership card.</li>
+  <li class="text-left">Points earned cannot be redeemed as cash refunds.</li>
+  <li class="text-left">Members will accumulate points in each purchase.</li>
+  <li class="text-left">Points earned can only be redeemed against general purchases or specific product rebates.</li>
+  <li class="text-left">Points can be adjusted within 7 days of purchase but receipt must be shown.</li>
+  <li class="text-left">Membership will be canceled if not purchased for six months and also downgrade his/her Membership Category.</li>
+  <li class="text-left">All notices relative to the membership shall be sent to the Member's email address or Phone Number provided during the registration process.</li>
+  <li class="text-left">The Member may extend his/her concerns to Khulshi Mart by emailing info@khulshimart.com.</li>
+  <li class="text-left">Khulshi Mart reserves the right to change the Terms & Conditions of membership without any prior notice.</li>
+</ul>
+
                   </div>
                 </div>
               </div>
@@ -483,19 +459,19 @@
           >
             <!-- Name -->
             <div class="grid gap-2 md:gap-1" :style="style">
-              <label for="name" class="block font-bold">OTP</label>
-              <input
-                type="text"
-                id="name"
-                v-model="otp"
-                :class="inputClass"
-                placeholder="e.g. 1234"
-                required
-              />
-              <span v-if="errors?.otp" class="text-red-500">{{
-                errors.otp
-              }}</span>
-            </div>
+      <label for="otp" class="block font-bold">OTP for {{ phoneNumber }}</label>
+      <input
+        type="text"
+        id="otp"
+        v-model="otp"
+        :class="inputClass"
+        placeholder="e.g. 1234"
+        required
+      />
+      <span v-if="errors?.otp" class="text-red-500">{{ errors.otp }}</span>
+      
+      <button @click="resendOTP" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2">Resend OTP</button>
+    </div>
 
             <div class="flex justify-end gap-2 md:gap-1">
               <button
@@ -687,10 +663,13 @@ const submitForm = () => {
     });
 };
 const notify = (id) => {
-  toast.success("Thanks For Registration.Your Membership Id is: " + id, {
-    autoClose: 9000,
-  }); // ToastOptions
+  toast.success("Thanks For Registration. Your Special K Card <strong>ID</strong> is: " + id, {
+    autoClose: false,
+    closeButton: true, // To close manually
+    // Other ToastOptions if needed
+  });
 };
+
 // Function to refresh CAPTCHA
 const refreshCaptcha = () => {
   captchaText.value = generateRandomString(4); // Generate a 6-character random string
