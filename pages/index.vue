@@ -459,7 +459,7 @@
           >
             <!-- Name -->
             <div class="grid gap-2 md:gap-1" :style="style">
-      <label for="otp" class="block font-bold">OTP for {{ phoneNumber }}</label>
+      <label for="otp" class="block font-bold">OTP for {{ formData.phone }}</label>
       <input
         type="text"
         id="otp"
