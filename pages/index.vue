@@ -470,7 +470,7 @@
       />
       <span v-if="errors?.otp" class="text-red-500">{{ errors.otp }}</span>
       
-      <!-- <button @click="resendOTP" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2">Resend OTP</button> -->
+      
     </div>
 
             <div class="flex justify-end gap-2 md:gap-1">
@@ -536,6 +536,7 @@
               <!-- <h1 class="text-[#283516]">Instagram</h1> -->
             </a>
           </li>
+          
         </ul>
       </section>
     </section>
