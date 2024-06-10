@@ -663,7 +663,7 @@ const submitForm = () => {
     });
 };
 const notify = (id) => {
-  toast.success("Thanks For Registration. Your Special K Card <strong>ID</strong> is: " + id, {
+  toast.success("Thanks For Registration. Your Special K Card ID is: " + id, {
     autoClose: false,
     closeButton: true, // To close manually
     // Other ToastOptions if needed
