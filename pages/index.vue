@@ -459,7 +459,7 @@
           >
             <!-- Name -->
             <div class="grid gap-2 md:gap-1" :style="style">
-      <label for="otp" class="block font-bold">OTP for {{ formData.phone }}</label>
+      <label for="otp" class="block font-bold">We have sent a One Time Password (OTP) to your Mobile number.Please Enter OTP here</label>
       <input
         type="text"
         id="otp"
@@ -470,7 +470,7 @@
       />
       <span v-if="errors?.otp" class="text-red-500">{{ errors.otp }}</span>
       
-      <button @click="resendOTP" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2">Resend OTP</button>
+      <!-- <button @click="resendOTP" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2">Resend OTP</button> -->
     </div>
 
             <div class="flex justify-end gap-2 md:gap-1">
