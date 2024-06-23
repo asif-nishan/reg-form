@@ -424,7 +424,7 @@
   <li class="px-4 py-2 text-justify">Members will accumulate points with each purchase.</li>
   <li class="px-4 py-2 text-justify">Points earned can only be redeemed against general purchases or specific product rebates.</li>
   <li class="px-4 py-2 text-justify">If a member does not purchase anything for 6 months,the membership will be canceled</li>
-  <li class="px-4 py-2 text-justify">Existing loyalty card holders who have been upgraded to the Special K membership mustregister online in order to avail its privileges</li>
+  <li class="px-4 py-2 text-justify">Existing loyalty card holders who have been upgraded to the Special K membership must register online in order to avail its privileges</li>
   <li class="px-4 py-2 text-justify">The  privileges associated with Special K membership may change without prior notice.</li>
   <li class="px-4 py-2 text-justify">All notices related to membership will be sent to the Member's email address or phone number provided during the registration process.</li>
   <li class="px-4 py-2 text-justify">The Member may address concerns to Khulshi Mart by emailing info@khulshimart.com.</li>
