@@ -53,7 +53,7 @@
                 :style="style"
               >
                 <label for="Number" :class="brandColor" class="block font-bold"
-                  >Existing Membership ID <span class="text-red-500">*</span></label
+                  >Please Enter Existing Membership ID <span class="text-red-500">*</span></label
                 >
                 <input
                   type="text"
