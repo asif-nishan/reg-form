@@ -1,7 +1,7 @@
 <template>
   <section style="background-image: linear-gradient(45deg, #daeaa5, #89bbef)">
     <section
-      class="flex flex-col justify-center max-w-[40rem] mx-auto items-center scrollable-container"
+      class="flex flex-col justify-center max-w-[44rem] mx-auto items-center scrollable-container"
       :class="!regFormSubmitted ? 'md:h-screen' : 'h-screen'"
       s
     >
@@ -13,13 +13,13 @@
           <nav class="sticky top-0 bg-white z-[101]">
             <center class="md:py-0 py-4">
               <img
-                width="160"
+                width="120"
                 height="10"
                 src="/assets/khulshi.png"
                 class="bg-white hidden md:block"
               />
               <img
-                width="150"
+                width="140"
                 height="10"
                 src="/assets/khulshi.png"
                 class="bg-white sm:block md:hidden"
@@ -33,7 +33,7 @@
                 <label
                   :class="brandColor"
                   class="block font-bold"
-                  >Please Select Membership type <span class="text-red-500">*</span></label
+                  >Are you a New or Old Member?Please select  Membership type  <span class="text-red-500">*</span></label
                 >
                 <select
                   v-model="memberType"
@@ -104,7 +104,7 @@
                   id="phone"
                   v-model="formData.phone"
                   :class="inputClass"
-                  placeholder="Pleas Enter Valid Mobile Number e.g. 0123456789"
+                  placeholder="Please Enter Valid Mobile Number For OTP Verification"
                   required
                 />
                 <!-- <span v-if="errors.phone" class="text-red-500">{{
@@ -415,19 +415,27 @@
                       Terms & Conditions
                     </h2>
                     <!-- Add content here -->
-                    <ul class="list-disc pl-4 md:pl-6 text-xs md:text-sm text-left">
-  <li class="text-left">Special K Card Membership is non-transferable.</li>
-  <li class="text-left">Membership is free of cost for our patrons. However, Khulshi Mart reserves the right to accept/decline/defer any membership application.</li>
-  <li class="text-left">Special K Card can not be used for credit purchases. This is only a membership card.</li>
-  <li class="text-left">Points earned cannot be redeemed as cash refunds.</li>
-  <li class="text-left">Members will accumulate points in each purchase.</li>
-  <li class="text-left">Points earned can only be redeemed against general purchases or specific product rebates.</li>
-  <li class="text-left">Points can be adjusted within 7 days of purchase but receipt must be shown.</li>
-  <li class="text-left">Membership will be canceled if not purchased for six months and also downgrade his/her Membership Category.</li>
-  <li class="text-left">All notices relative to the membership shall be sent to the Member's email address or Phone Number provided during the registration process.</li>
-  <li class="text-left">The Member may extend his/her concerns to Khulshi Mart by emailing info@khulshimart.com.</li>
-  <li class="text-left">Khulshi Mart reserves the right to change the Terms & Conditions of membership without any prior notice.</li>
+                    <ul class="list-disc pl-4 md:pl-6 text-sm text-left">
+                      <li class="px-4 py-2 text-justify">This Special K Card is Valid for three years Until March 31,2027.The Membership will have to be renewed after the specified date.</li>
+  <li class="px-4 py-2 text-justify">Special K Card Membership is non-transferable.</li>
+  <li class="px-4 py-2 text-justify">Membership is free of cost for our patrons, but Khulshi Mart reserves the right to accept, decline, or defer any membership application.</li>
+  <li class="px-4 py-2 text-justify">Special K Card cannot be used for credit purchases; it is only a membership card.</li>
+  <li class="px-4 py-2 text-justify">Points earned cannot be redeemed as cash refunds.</li>
+  <li class="px-4 py-2 text-justify">Members will accumulate points with each purchase.</li>
+  <li class="px-4 py-2 text-justify">Points earned can only be redeemed against general purchases or specific product rebates.</li>
+  <li class="px-4 py-2 text-justify">If a member does not purchase anything for 6 months,the membership will be canceled</li>
+  <li class="px-4 py-2 text-justify">Existing loyalty card holders who have been upgraded to the Special K membership mustregister online in order to avail its privileges</li>
+  <li class="px-4 py-2 text-justify">The  privileges associated with Special K membership may change without prior notice.</li>
+  <li class="px-4 py-2 text-justify">All notices related to membership will be sent to the Member's email address or phone number provided during the registration process.</li>
+  <li class="px-4 py-2 text-justify">The Member may address concerns to Khulshi Mart by emailing info@khulshimart.com.</li>
+  <li class="px-4 py-2 ">Khulshi Mart reserves the right to change the Terms & Conditions of membership without prior notice.</li>
+  
 </ul>
+
+
+
+
+
 
                   </div>
                 </div>
