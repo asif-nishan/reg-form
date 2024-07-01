@@ -1,1 +1,0 @@
-export { default } from "file:///E:/Barcode%20Issue/user-reg-form/node_modules/@nuxt/vite-builder/dist/runtime/client.manifest.mjs"
